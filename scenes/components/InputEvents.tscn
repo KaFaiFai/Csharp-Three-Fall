@@ -1,3 +1,6 @@
-[gd_scene format=3 uid="uid://bjmrato4y1a8w"]
+[gd_scene load_steps=2 format=3 uid="uid://bjmrato4y1a8w"]
+
+[ext_resource type="Script" path="res://scenes/components/InputEvents.cs" id="1_8v275"]
 
 [node name="InputEvents" type="Node"]
+script = ExtResource("1_8v275")
