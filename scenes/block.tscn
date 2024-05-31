@@ -1,0 +1,21 @@
+[gd_scene load_steps=2 format=3 uid="uid://clgh8o5jhho6p"]
+
+[ext_resource type="Script" path="res://scenes/Block.cs" id="1_j4msj"]
+
+[node name="Block" type="Node2D"]
+position = Vector2(500, 300)
+script = ExtResource("1_j4msj")
+metadata/_edit_group_ = true
+
+[node name="ColorRect" type="ColorRect" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -15.0
+offset_top = -15.0
+offset_right = 15.0
+offset_bottom = 15.0
+grow_horizontal = 2
+grow_vertical = 2

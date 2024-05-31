@@ -1,0 +1,3 @@
+[gd_scene format=3 uid="uid://b12i7atr4i8gu"]
+
+[node name="Polyomino" type="Node2D"]
