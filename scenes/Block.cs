@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Block : Node
+public partial class Block : Node2D
 {
     public BlockType Type { get; set; } = BlockType.d;
 

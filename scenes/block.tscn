@@ -1,7 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://clgh8o5jhho6p"]
+[gd_scene load_steps=2 format=3 uid="uid://clgh8o5jhho6p"]
 
 [ext_resource type="Script" path="res://scenes/Block.cs" id="1_j4msj"]
-[ext_resource type="PackedScene" uid="uid://bjmrato4y1a8w" path="res://scenes/components/InputEvents.tscn" id="2_bxu01"]
 
 [node name="Block" type="Node2D"]
 position = Vector2(585, 341)
@@ -20,8 +19,3 @@ offset_right = 15.0
 offset_bottom = 15.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="InputEvents" parent="." instance=ExtResource("2_bxu01")]
-
-[connection signal="MovedLeft" from="InputEvents" to="." method="_on_input_events_moved_left"]
-[connection signal="MovedRight" from="InputEvents" to="." method="_on_input_events_moved_right"]

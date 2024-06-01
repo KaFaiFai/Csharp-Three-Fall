@@ -4,25 +4,38 @@ using System;
 public partial class InputEvents : Node
 {
     [Signal]
-    public delegate void MovedLeftEventHandler();
+    public delegate void LeftPressedEventHandler();
     [Signal]
-    public delegate void MovedRightEventHandler();
-
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-    }
+    public delegate void RightPressedEventHandler();
+    [Signal]
+    public delegate void ClockwisePressedEventHandler();
+    [Signal]
+    public delegate void AnticlockwisePressedEventHandler();
+    [Signal]
+    public delegate void ConfirmPressedEventHandler();
 
     // Called every frame. 'delta' is the elapsed time since the previous frame.
     public override void _Process(double delta)
     {
-        if (Input.IsActionJustPressed("move_left"))
+        if (Input.IsActionJustPressed("left"))
         {
-            EmitSignal(SignalName.MovedLeft);
+            EmitSignal(SignalName.LeftPressed);
         }
-        if (Input.IsActionJustPressed("move_right"))
+        if (Input.IsActionJustPressed("right"))
         {
-            EmitSignal(SignalName.MovedRight);
+            EmitSignal(SignalName.RightPressed);
+        }
+        if (Input.IsActionJustPressed("clockwise"))
+        {
+            EmitSignal(SignalName.ClockwisePressed);
+        }
+        if (Input.IsActionJustPressed("anticlockwise"))
+        {
+            EmitSignal(SignalName.AnticlockwisePressed);
+        }
+        if (Input.IsActionJustPressed("confirm"))
+        {
+            EmitSignal(SignalName.ConfirmPressed);
         }
     }
 }
