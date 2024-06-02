@@ -10,58 +10,63 @@ public partial class Polyomino : Node2D
     [Export]
     public PackedScene BlockScene;
 
-    static private readonly float cellSize = 50;
+    static private readonly float _cellSize = 50;
     public Block[,] Blocks { get; set; }
-    public Vector2I BlocksSize() => new Vector2I(Blocks.GetLength(0), Blocks.GetLength(1));
 
-    // Called when the node enters the scene tree for the first time.
+    // For rotation animations
+    private Tween _tween;
+
     public override void _Ready()
     {
-        Vector2I gridRowCol = new Vector2I(2, 2);
-        var block1 = BlockScene.Instantiate<Block>();
-        block1.Type = BlockType.a;
-        block1.Position = GetCellPositionAt(gridRowCol, cellSize, new Vector2I(0, 0));
-        var block2 = BlockScene.Instantiate<Block>();
-        block2.Type = BlockType.b;
-        block2.Position = GetCellPositionAt(gridRowCol, cellSize, new Vector2I(0, 1));
-        var block4 = BlockScene.Instantiate<Block>();
-        block4.Type = BlockType.c;
-        block4.Position = GetCellPositionAt(gridRowCol, cellSize, new Vector2I(1, 1));
-
-        AddChild(block1);
-        AddChild(block2);
-        AddChild(block4);
-
-        Blocks = new Block[,] { { block1, block2 }, { null, block4 } };
-        RedrawBlocks();
+        BlockType?[,] blockTypes = new BlockType?[,] { { BlockType.a, BlockType.b }, { null, BlockType.c } };
+        UpdateBlocksFromTypes(blockTypes);
     }
 
-    public void RedrawBlocks()
+    public void RelocateBlocks()
     {
-        for (var i = 0; i < Blocks.GetLength(0); i++)
+        Vector2I rowCol = new Vector2I(Blocks.GetLength(0), Blocks.GetLength(1));
+        for (var i = 0; i < rowCol.X; i++)
         {
-            for (var j = 0; j < Blocks.GetLength(1); j++)
+            for (var j = 0; j < rowCol.Y; j++)
             {
                 Block block = Blocks[i, j];
                 if (block != null)
                 {
-                    block.Position = GetCellPositionAt(BlocksSize(), cellSize, new Vector2I(i, j));
+                    block.Position = Util.GetCellPositionAt(rowCol, _cellSize, new Vector2I(i, j));
                 }
             }
         }
     }
 
-    /// <summary>
-    /// Return offset from the grid center to the center of this cell
-    /// </summary>
-    static public Vector2 GetCellPositionAt(Vector2I gridRowCol, float cellSize, Vector2I cellRowCol)
+    public void UpdateBlocksFromTypes(BlockType?[,] blockTypes)
     {
-        // (row, col) is mapped to (y, x)
-        Vector2 cellPos = new Vector2(cellRowCol.X, cellRowCol.Y) * cellSize + Vector2.One * cellSize / 2;
-        Vector2 gridCenter = new Vector2(gridRowCol.X, gridRowCol.Y) * cellSize / 2;
-        Vector2 offset = cellPos - gridCenter;
-        Vector2 swapped = new Vector2(offset.Y, offset.X);
-        return swapped;
+        // Remove previous blocks
+        foreach (var child in GetChildren())
+        {
+            if (child is Block)
+            {
+                child.QueueFree();
+            }
+        }
+
+        // Instantiate new blocks
+        Vector2I gridRowCol = new Vector2I(blockTypes.GetLength(0), blockTypes.GetLength(1));
+        Blocks = new Block[gridRowCol.X, gridRowCol.Y];
+        for (var i = 0; i <= blockTypes.GetLength(0); i++)
+        {
+            for (var j = 0; j < blockTypes.GetLength(1); j++)
+            {
+                BlockType? blockType = blockTypes[i, j];
+                if (blockType != null)
+                {
+                    Block block = BlockScene.Instantiate<Block>();
+                    block.Type = (BlockType)blockType;
+                    block.Position = Util.GetCellPositionAt(gridRowCol, _cellSize, new Vector2I(i, j));
+                    AddChild(block);
+                    Blocks[i, j] = block;
+                }
+            }
+        }
     }
 
     public void RotateClockwise() => Rotate(clockwise: true);
@@ -70,87 +75,35 @@ public partial class Polyomino : Node2D
 
     private async void Rotate(bool clockwise)
     {
-        List<(Vector2I, Vector2I)> gridRotations = RotateGridCells(BlocksSize(), clockwise: clockwise);
-        Vector2I rotatedRowCol = new Vector2I(Blocks.GetLength(1), Blocks.GetLength(0));
+        Vector2I rowCol = new Vector2I(Blocks.GetLength(0), Blocks.GetLength(1));
+        List<(Vector2I, Vector2I)> gridRotations = Util.RotateGridCells(rowCol, clockwise: clockwise);
+        Vector2I rotatedRowCol = new Vector2I(rowCol.X, rowCol.Y);
 
-        Block[,] newBLocks = new Block[rotatedRowCol.X, rotatedRowCol.Y];
-        Tween tween = CreateTween().SetParallel();
+        Block[,] newBlocks = new Block[rotatedRowCol.X, rotatedRowCol.Y];
+        _tween?.Kill();
+        _tween = CreateTween().SetParallel();
         foreach (var (from, to) in gridRotations)
         {
             Block block = Blocks[from.X, from.Y];
-            if (block == null)
+            if (block != null)
             {
-                newBLocks[to.X, to.Y] = null;
-            }
-            else
-            {
-                newBLocks[to.X, to.Y] = block;
-                Vector2 targetPosition = GetCellPositionAt(rotatedRowCol, cellSize, to);
-                tween.TweenMethod(TweenRotation(block, targetPosition), 0f, 1f, 1.0f);
-
+                newBlocks[to.X, to.Y] = block;
+                Vector2 targetPosition = Util.GetCellPositionAt(rotatedRowCol, _cellSize, to);
+                _tween.TweenMethod(TweenRotation(block, targetPosition, clockwise), 0f, 1f, 1.0f);
             }
         }
-        Blocks = newBLocks;
-        await ToSignal(tween, Tween.SignalName.Finished);
-        RedrawBlocks();
+        Blocks = newBlocks;
+        await ToSignal(_tween, Tween.SignalName.Finished);
+        RelocateBlocks();
     }
 
-    private Callable TweenRotation(Node2D scene, Vector2 targetPosition)
+    private Callable TweenRotation(Node2D scene, Vector2 targetPosition, bool clockwise)
     {
         Vector2 originalPosition = scene.Position;
-        GD.Print(originalPosition, targetPosition);
         void Rotate(float t)
         {
-            scene.Position = CurvedInterpolate(originalPosition, targetPosition, Vector2.Zero, t);
+            scene.Position = Util.CurvedInterpolate(originalPosition, targetPosition, Vector2.Zero, clockwise, t);
         }
         return Callable.From<float>(Rotate);
-    }
-
-    /// <summary>
-    /// Return the from and to of each cell position
-    /// </summary>
-    static private List<(Vector2I, Vector2I)> RotateGridCells(Vector2I rowCol, bool clockwise)
-    {
-        List<(Vector2I, Vector2I)> results = new List<(Vector2I, Vector2I)>();
-        for (int i = 0; i < rowCol.X; i++)
-        {
-            for (int j = 0; j < rowCol.Y; j++)
-            {
-                Vector2I from = new Vector2I(i, j);
-                Vector2I to = clockwise ? new Vector2I(j, rowCol.X - 1 - i) : new Vector2I(rowCol.Y - 1 - j, i);
-                results.Add((from, to));
-            }
-        }
-        return results;
-    }
-
-    /// <summary>
-    /// Linear interpolate the angle and distance from the center. Expect 0 <= t <= 1
-    /// </summary>
-    static private Vector2 CurvedInterpolate(Vector2 start, Vector2 end, Vector2 center, float t)
-    {
-        Vector2 startToCenter = start - center;
-        Vector2 endToCenter = end - center;
-
-        float startLength = startToCenter.Length();
-        float endLength = endToCenter.Length();
-        float interpolatedLength = startLength * (1 - t) + endLength * t;
-
-        // find angle between start and end
-        float dotProduct = startToCenter.Dot(endToCenter);
-        float magnitudeProduct = startToCenter.Length() * endToCenter.Length();
-        float angle = Mathf.Acos(dotProduct / magnitudeProduct);
-        float interpolatedAngle = angle * t;
-
-        // find rotated vector of start by some angles
-        float cosTheta = Mathf.Cos(interpolatedAngle);
-        float sinTheta = Mathf.Sin(interpolatedAngle);
-        float rotatedX = start.X * cosTheta - start.Y * sinTheta;
-        float rotatedY = start.X * sinTheta + start.Y * cosTheta;
-        Vector2 rotatedVector = new Vector2(rotatedX, rotatedY);
-
-        Vector2 scaledRotatedVector = rotatedVector / rotatedVector.Length() * interpolatedLength;
-
-        return scaledRotatedVector + center;
     }
 }
