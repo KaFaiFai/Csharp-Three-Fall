@@ -19,24 +19,6 @@ public static class Util
     }
 
     /// <summary>
-    /// Return the from and to of each cell position
-    /// </summary>
-    static public List<(Vector2I, Vector2I)> RotateGridCells(Vector2I rowCol, bool clockwise)
-    {
-        List<(Vector2I, Vector2I)> results = new List<(Vector2I, Vector2I)>();
-        for (int i = 0; i < rowCol.X; i++)
-        {
-            for (int j = 0; j < rowCol.Y; j++)
-            {
-                Vector2I from = new Vector2I(i, j);
-                Vector2I to = clockwise ? new Vector2I(j, rowCol.X - 1 - i) : new Vector2I(rowCol.Y - 1 - j, i);
-                results.Add((from, to));
-            }
-        }
-        return results;
-    }
-
-    /// <summary>
     /// Linearly interpolate the angle and distance from the center
     /// in the direction specified by clockwise.
     /// Expect t in the range of [0, 1]

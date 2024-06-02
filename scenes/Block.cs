@@ -18,30 +18,4 @@ public partial class Block : Node2D
             _ => Colors.Black,
         };
     }
-
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-    {
-    }
-
-    private async void _on_input_events_moved_left()
-    {
-        GD.Print("Moved Left");
-        Tween tween = CreateTween();
-        tween.TweenProperty(this, "position", new Vector2(300, 300), 1f);
-        await ToSignal(tween, "finished");
-        GD.Print("Moved Left Finished");
-        tween = CreateTween();
-        tween.TweenProperty(this, "position", new Vector2(200, 300), 1f);
-    }
-    private async void _on_input_events_moved_right()
-    {
-        GD.Print("Moved Right");
-        Tween tween = CreateTween();
-        tween.TweenProperty(this, "position", new Vector2(700, 300), 1f);
-        await ToSignal(tween, "finished");
-        GD.Print("Moved Right Finished");
-        tween = CreateTween();
-        tween.TweenProperty(this, "position", new Vector2(800, 300), 1f);
-    }
 }
