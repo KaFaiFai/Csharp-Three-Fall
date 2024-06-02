@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckhwuulfvwjse"]
+
+[ext_resource type="Script" path="res://scenes/BlockBoard.cs" id="1_8iwdt"]
+[ext_resource type="PackedScene" uid="uid://clgh8o5jhho6p" path="res://scenes/Block.tscn" id="2_3v365"]
+
+[node name="BlockBoard" type="Node2D"]
+position = Vector2(595, 338)
+script = ExtResource("1_8iwdt")
+BlockScene = ExtResource("2_3v365")
