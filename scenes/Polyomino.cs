@@ -37,7 +37,7 @@ public partial class Polyomino : Node2D
             if (block != null)
             {
                 newBlocks[to.X, to.Y] = block;
-                Vector2 targetPosition = Util.GetCellPositionAt(rotatedRowCol, _blockGrid.CellSize, to);
+                Vector2 targetPosition = BlockGrid.GetCellPositionAt(rotatedRowCol, _blockGrid.CellSize, to);
                 _tween.TweenMethod(TweenRotation(block, targetPosition, clockwise), 0f, 1f, 1.0f);
             }
         }

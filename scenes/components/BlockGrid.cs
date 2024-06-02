@@ -24,6 +24,15 @@ public partial class BlockGrid : Node2D
     }
 
     /// <summary>
+    /// Convienient method using this data
+    /// </summary>
+    public Vector2 GetCellPositionAt(Vector2I cellRowCol)
+    {
+        Vector2I gridRowCol = new Vector2I(Blocks.GetLength(0), Blocks.GetLength(1));
+        return GetCellPositionAt(gridRowCol, CellSize, cellRowCol);
+    }
+
+    /// <summary>
     /// Return the from and to of each cell position
     /// </summary>
     public List<(Vector2I, Vector2I)> RotateCells(bool clockwise)
@@ -52,7 +61,7 @@ public partial class BlockGrid : Node2D
                 Block block = Blocks[i, j];
                 if (block != null)
                 {
-                    block.Position = Util.GetCellPositionAt(rowCol, CellSize, new Vector2I(i, j));
+                    block.Position = GetCellPositionAt(new Vector2I(i, j));
                 }
             }
         }
@@ -81,7 +90,7 @@ public partial class BlockGrid : Node2D
                 {
                     Block block = BlockScene.Instantiate<Block>();
                     block.Type = (BlockType)blockType;
-                    block.Position = Util.GetCellPositionAt(gridRowCol, CellSize, new Vector2I(i, j));
+                    block.Position = GetCellPositionAt(gridRowCol, CellSize, new Vector2I(i, j));
                     AddChild(block);
                     Blocks[i, j] = block;
                 }

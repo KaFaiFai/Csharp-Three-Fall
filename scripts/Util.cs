@@ -6,19 +6,6 @@ using System.Collections.Generic;
 public static class Util
 {
     /// <summary>
-    /// Return offset from the grid center to the center of this cell
-    /// </summary>
-    static public Vector2 GetCellPositionAt(Vector2I gridRowCol, float cellSize, Vector2I cellRowCol)
-    {
-        // (row, col) is mapped to (y, x)
-        Vector2 cellPos = new Vector2(cellRowCol.X, cellRowCol.Y) * cellSize + Vector2.One * cellSize / 2;
-        Vector2 gridCenter = new Vector2(gridRowCol.X, gridRowCol.Y) * cellSize / 2;
-        Vector2 offset = cellPos - gridCenter;
-        Vector2 swapped = new Vector2(offset.Y, offset.X);
-        return swapped;
-    }
-
-    /// <summary>
     /// Linearly interpolate the angle and distance from the center
     /// in the direction specified by clockwise.
     /// Expect t in the range of [0, 1]
