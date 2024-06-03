@@ -9,4 +9,3 @@ script = ExtResource("1_8iwdt")
 BlockScene = ExtResource("2_3v365")
 
 [node name="BlockGrid" parent="." instance=ExtResource("3_eqlts")]
-BlockScene = ExtResource("2_3v365")

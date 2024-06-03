@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://blrgac5gfmush"]
+[gd_scene load_steps=3 format=3 uid="uid://blrgac5gfmush"]
 
 [ext_resource type="Script" path="res://scenes/components/BlockGrid.cs" id="1_n8jbm"]
+[ext_resource type="PackedScene" uid="uid://clgh8o5jhho6p" path="res://scenes/Block.tscn" id="2_5c2qd"]
 
 [node name="BlockGrid" type="Node2D"]
 script = ExtResource("1_n8jbm")
+BlockScene = ExtResource("2_5c2qd")

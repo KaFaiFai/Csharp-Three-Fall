@@ -1,12 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://b12i7atr4i8gu"]
+[gd_scene load_steps=3 format=3 uid="uid://b12i7atr4i8gu"]
 
 [ext_resource type="Script" path="res://scenes/Polyomino.cs" id="1_o1led"]
 [ext_resource type="PackedScene" uid="uid://blrgac5gfmush" path="res://scenes/components/BlockGrid.tscn" id="3_orxln"]
-[ext_resource type="PackedScene" uid="uid://clgh8o5jhho6p" path="res://scenes/Block.tscn" id="4_n8msq"]
 
 [node name="Polyomino" type="Node2D"]
 script = ExtResource("1_o1led")
 metadata/_edit_group_ = true
 
 [node name="BlockGrid" parent="." instance=ExtResource("3_orxln")]
-BlockScene = ExtResource("4_n8msq")

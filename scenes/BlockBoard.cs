@@ -86,21 +86,28 @@ public partial class BlockBoard : Node2D
     private async Task<bool> RemoveMatch3()
     {
         BlockType?[,] blockTypes = BlockGrid.ToBlockTypes();
-        List<Vector2I> match3RowCols = Mechanics.FindMatch3(blockTypes);
+        List<List<Vector2I>> match3RowCols = Mechanics.FindMatch3(blockTypes);
         if (match3RowCols.Count == 0) return false;
 
         // play disappearing animation
         Tween tween = CreateTween().SetParallel();
-        foreach (var rowCol in match3RowCols)
+        for (var i = 0; i < match3RowCols.Count; i++)
         {
-            Block block = BlockGrid.Blocks[rowCol.X, rowCol.Y];
-            tween.TweenProperty(block, "scale", new Vector2(0, 0), 1);
+            double delay = i * 0.2;
+            foreach (var rowCol in match3RowCols[i])
+            {
+                Block block = BlockGrid.Blocks[rowCol.X, rowCol.Y];
+                tween.TweenProperty(block, "scale", new Vector2(0, 0), 1).SetDelay(delay);
+            }
         }
         await ToSignal(tween, Tween.SignalName.Finished);
 
-        foreach (var rowCol in match3RowCols)
+        foreach (var groups in match3RowCols)
         {
-            blockTypes[rowCol.X, rowCol.Y] = null;
+            foreach (var rowCol in groups)
+            {
+                blockTypes[rowCol.X, rowCol.Y] = null;
+            }
         }
         BlockGrid.UpdateBlocksFromTypes(blockTypes);
         return true;

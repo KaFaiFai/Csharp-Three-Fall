@@ -80,7 +80,7 @@ public partial class GameScreen : Node2D
             {
                 if (shape[i, j])
                 {
-                    newBlockTypes[i, j] = allBlockTypes[Rng.RandiRange(0, allBlockTypes.Length)];
+                    newBlockTypes[i, j] = allBlockTypes[Rng.RandiRange(0, allBlockTypes.Length - 1)];
                 }
             }
         }
