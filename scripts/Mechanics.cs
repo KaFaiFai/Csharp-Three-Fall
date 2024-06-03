@@ -58,97 +58,33 @@ public partial class Mechanics : RefCounted
         return dropTo;
     }
 
-    static public List<Vector2I> FindMatch3(BlockType?[,] mainBoard)
+    static public List<List<Vector2I>> FindMatch3(BlockType?[,] mainBoard)
     {
         int numRow = mainBoard.GetLength(0);
         int numCol = mainBoard.GetLength(1);
-        List<Vector2I> results = new List<Vector2I>();
+        List<List<Vector2I>> results = new List<List<Vector2I>>();
 
         // scan horizontal lines
         for (int i = 0; i < numRow; i++)
         {
-            List<Vector2I> curResults = new List<Vector2I>();
-            for (int j = 0; j < numCol; j++)
-            {
-                BlockType? block = mainBoard[i, j];
-                Vector2I rowCol = new Vector2I(i, j);
-                if (block == null)
-                {
-                    if (curResults.Count >= 3)
-                    {
-                        results.AddRange(curResults);
-                    }
-                    curResults = new List<Vector2I>();
-                }
-                else if (curResults.Count == 0)
-                {
-                    curResults.Add(rowCol);
-                }
-                else
-                {
-                    if (block == mainBoard[curResults.Last().X, curResults.Last().Y])
-                    {
-                        curResults.Add(rowCol);
-                    }
-                    else
-                    {
-                        if (curResults.Count >= 3)
-                        {
-                            results.AddRange(curResults);
-                        }
-                        curResults = new List<Vector2I> { rowCol };
-                    }
-                }
-            }
-            if (curResults.Count >= 3)
-            {
-                results.AddRange(curResults);
-            }
+            List<BlockType?> line = Enumerable.Range(0, numCol).Select(j => mainBoard[i, j]).ToList();
+            List<List<Vector2I>> match3InLine = FindMatch3InLine(line)
+                .Select(combo => combo.Select(j => new Vector2I(i, j)).ToList())
+                .ToList();
+            results.AddRange(match3InLine);
         }
-
 
         // scan vertical lines
         for (int j = 0; j < numCol; j++)
         {
-            List<Vector2I> curResults = new List<Vector2I>();
-            for (int i = 0; i < numRow; i++)
-            {
-                BlockType? block = mainBoard[i, j];
-                Vector2I rowCol = new Vector2I(i, j);
-                if (block == null)
-                {
-                    if (curResults.Count >= 3)
-                    {
-                        results.AddRange(curResults);
-                    }
-                    curResults = new List<Vector2I>();
-                }
-                else if (curResults.Count == 0)
-                {
-                    curResults.Add(rowCol);
-                }
-                else
-                {
-                    if (block == mainBoard[curResults.Last().X, curResults.Last().Y])
-                    {
-                        curResults.Add(rowCol);
-                    }
-                    else
-                    {
-                        if (curResults.Count >= 3)
-                        {
-                            results.AddRange(curResults);
-                        }
-                        curResults = new List<Vector2I> { rowCol };
-                    }
-                }
-            }
-            if (curResults.Count >= 3)
-            {
-                results.AddRange(curResults);
-            }
+            List<BlockType?> line = Enumerable.Range(0, numRow).Select(i => mainBoard[i, j]).ToList();
+            List<List<Vector2I>> match3InLine = FindMatch3InLine(line)
+                .Select(combo => combo.Select(i => new Vector2I(i, j)).ToList())
+                .ToList();
+            results.AddRange(match3InLine);
         }
-        return results;
+
+        return MergeSublist(results);
     }
 
     static public List<(Vector2I, Vector2I, BlockType)> FindFlyingBlocks(BlockType?[,] mainBoard)
