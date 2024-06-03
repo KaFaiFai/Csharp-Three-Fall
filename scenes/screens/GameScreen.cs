@@ -47,7 +47,6 @@ public partial class GameScreen : Node2D
     public async void RotateAnticlockwise()
     {
         await _curPolyomino.RotateAnticlockwise();
-        GD.Print("Update preview");
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
     }
 
@@ -56,10 +55,10 @@ public partial class GameScreen : Node2D
         if (!IsPlacingDisabled)
         {
             _blockBoard.ClearPreview();
-            _blockBoard.ResolveBoardForNewPolyomino(_curPolyomino, LeftIndex);
             _curPolyomino.BlockGrid.UpdateBlocksFromTypes(new BlockType?[0, 0]);
             IsPlacingDisabled = true;
-            await ToSignal(_blockBoard, BlockBoard.SignalName.BoardResolved);
+            await _blockBoard.ResolveBoardForNewPolyomino(_curPolyomino, LeftIndex);
+
             IsPlacingDisabled = false;
             AdvancePolyomino();
             _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);

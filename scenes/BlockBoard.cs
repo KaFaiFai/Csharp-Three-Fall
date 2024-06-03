@@ -1,12 +1,10 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public partial class BlockBoard : Node2D
 {
-    [Signal]
-    public delegate void BoardResolvedEventHandler();
-
     [Export]
     public PackedScene BlockScene;
 
@@ -31,9 +29,9 @@ public partial class BlockBoard : Node2D
     {
         ClearPreview();
 
-        List<(Vector2I, BlockType)> willDropTo =
+        List<(Vector2I, Vector2I, BlockType)> willDropTo =
             Mechanics.WillDropTo(BlockGrid.ToBlockTypes(), polyomino.BlockGrid.ToBlockTypes(), leftIndex);
-        foreach (var (rowCol, type) in willDropTo)
+        foreach (var (_, rowCol, type) in willDropTo)
         {
             Block newBlock = BlockScene.Instantiate<Block>();
             newBlock.Type = type;
@@ -42,44 +40,65 @@ public partial class BlockBoard : Node2D
             PreviewBlocks.Add(newBlock);
             AddChild(newBlock);
         }
-
     }
 
-    public async void ResolveBoardForNewPolyomino(Polyomino polyomino, int leftIndex)
+    public async Task ResolveBoardForNewPolyomino(Polyomino polyomino, int leftIndex)
     {
-        PlaceNewPolyomino(polyomino, leftIndex);
+        await PlaceNewPolyomino(polyomino, leftIndex);
         bool toContinue = true;
         int phase = 0;
         while (toContinue)
         {
-            RemoveMatch3();
-            toContinue = DropFlyingBlocks();
+            await RemoveMatch3();
+            toContinue = await DropFlyingBlocks();
             phase++;
         }
         SceneTreeTimer timer = GetTree().CreateTimer(1);
         await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
-        EmitSignal(SignalName.BoardResolved);
     }
 
-    private void PlaceNewPolyomino(Polyomino polyomino, int leftIndex)
+    private async Task PlaceNewPolyomino(Polyomino polyomino, int leftIndex)
     {
         BlockType?[,] blockTypes = BlockGrid.ToBlockTypes();
-        List<(Vector2I, BlockType)> willDropTo =
+        List<(Vector2I, Vector2I, BlockType)> willDropTo =
             Mechanics.WillDropTo(blockTypes, polyomino.BlockGrid.ToBlockTypes(), leftIndex);
-        foreach (var (rowCol, type) in willDropTo)
+
+        // play falling animation
+        Tween tween = CreateTween().SetParallel();
+        foreach (var (from, to, type) in willDropTo)
+        {
+            Block block = BlockScene.Instantiate<Block>();
+            block.Position = BlockGrid.GetCellPositionAt(from);
+            block.Type = type;
+            AddChild(block);
+            tween.TweenProperty(block, "position", BlockGrid.GetCellPositionAt(to), 1);
+            tween.Finished += () => block.QueueFree();
+        }
+        await ToSignal(tween, Tween.SignalName.Finished);
+
+        foreach (var (_, rowCol, type) in willDropTo)
         {
             blockTypes[rowCol.X, rowCol.Y] = type;
         }
         BlockGrid.UpdateBlocksFromTypes(blockTypes);
     }
 
-    private bool RemoveMatch3()
+    private async Task<bool> RemoveMatch3()
     {
         BlockType?[,] blockTypes = BlockGrid.ToBlockTypes();
-        List<(Vector2I, BlockType)> match3Blocks = Mechanics.FindMatch3(blockTypes);
-        if (match3Blocks.Count == 0) return false;
+        List<Vector2I> match3RowCols = Mechanics.FindMatch3(blockTypes);
+        if (match3RowCols.Count == 0) return false;
 
-        foreach (var (rowCol, _) in match3Blocks)
+        // play disappearing animation
+        Tween tween = CreateTween().SetParallel();
+        foreach (var rowCol in match3RowCols)
+        {
+            Block block = BlockGrid.Blocks[rowCol.X, rowCol.Y];
+            tween.TweenProperty(block, "scale", new Vector2(0, 0), 1);
+        }
+        await ToSignal(tween, Tween.SignalName.Finished);
+
+        foreach (var rowCol in match3RowCols)
         {
             blockTypes[rowCol.X, rowCol.Y] = null;
         }
@@ -87,11 +106,21 @@ public partial class BlockBoard : Node2D
         return true;
     }
 
-    private bool DropFlyingBlocks()
+    private async Task<bool> DropFlyingBlocks()
     {
         BlockType?[,] blockTypes = BlockGrid.ToBlockTypes();
         List<(Vector2I, Vector2I, BlockType)> flyingBlocks = Mechanics.FindFlyingBlocks(blockTypes);
         if (flyingBlocks.Count == 0) return false;
+
+        // play falling animation
+        Tween tween = CreateTween().SetParallel();
+        foreach (var (from, to, type) in flyingBlocks)
+        {
+            Block block = BlockGrid.Blocks[from.X, from.Y];
+            tween.TweenProperty(block, "position", BlockGrid.GetCellPositionAt(to), 1);
+            tween.Finished += () => block.QueueFree();
+        }
+        await ToSignal(tween, Tween.SignalName.Finished);
 
         foreach (var (start, _, _) in flyingBlocks)
         {

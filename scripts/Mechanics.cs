@@ -12,11 +12,12 @@ using System.Linq;
 public partial class Mechanics : RefCounted
 {
     /// <summary>
-    /// Return the final positions and types the <paramref name="blocks"/> 
-    /// will drop into <paramref name="mainBoard"/>. 
+    /// Return the start positions with respect to the original shape right above the top row, 
+    /// final positions and types of the <paramref name="blocks"/> 
+    /// that will drop into <paramref name="mainBoard"/>. 
     /// The leftmost column index of the blocks is given by <paramref name="leftIndex"/>
     /// </summary>
-    static public List<(Vector2I, BlockType)> WillDropTo(BlockType?[,] mainBoard, BlockType?[,] blocks, int leftIndex)
+    static public List<(Vector2I, Vector2I, BlockType)> WillDropTo(BlockType?[,] mainBoard, BlockType?[,] blocks, int leftIndex)
     {
         // Top row is at 0 and bottom row is at NumRow - 1
         int numRow = mainBoard.GetLength(0);
@@ -35,17 +36,19 @@ public partial class Mechanics : RefCounted
             }
         }
 
-        List<(Vector2I, BlockType)> dropTo = new List<(Vector2I, BlockType)>();
+        List<(Vector2I, Vector2I, BlockType)> dropTo = new List<(Vector2I, Vector2I, BlockType)>();
         // Search from bottom to top
         for (int i = blocks.GetLength(0) - 1; i > -1; i--)
         {
             for (int j = 0; j < blocks.GetLength(1); j++)
             {
+                int col = leftIndex + j;
                 if (blocks[i, j] != null)
                 {
                     BlockType block = (BlockType)blocks[i, j];
-                    int col = leftIndex + j;
-                    dropTo.Add((new Vector2I(lowestEmptySpace[col], col), block));
+                    Vector2I start = new Vector2I(i - blocks.GetLength(0), col);
+                    Vector2I end = new Vector2I(lowestEmptySpace[col], col);
+                    dropTo.Add((start, end, block));
                     lowestEmptySpace[col] -= 1;
                 }
             }
@@ -54,16 +57,16 @@ public partial class Mechanics : RefCounted
         return dropTo;
     }
 
-    static public List<(Vector2I, BlockType)> FindMatch3(BlockType?[,] mainBoard)
+    static public List<Vector2I> FindMatch3(BlockType?[,] mainBoard)
     {
         int numRow = mainBoard.GetLength(0);
         int numCol = mainBoard.GetLength(1);
-        List<(Vector2I, BlockType)> results = new List<(Vector2I, BlockType)>();
+        List<Vector2I> results = new List<Vector2I>();
 
         // scan horizontal lines
         for (int i = 0; i < numRow; i++)
         {
-            List<(Vector2I, BlockType)> curResults = new List<(Vector2I, BlockType)>();
+            List<Vector2I> curResults = new List<Vector2I>();
             for (int j = 0; j < numCol; j++)
             {
                 BlockType? block = mainBoard[i, j];
@@ -74,17 +77,17 @@ public partial class Mechanics : RefCounted
                     {
                         results.AddRange(curResults);
                     }
-                    curResults = new List<(Vector2I, BlockType)>();
+                    curResults = new List<Vector2I>();
                 }
                 else if (curResults.Count == 0)
                 {
-                    curResults.Add((rowCol, (BlockType)block));
+                    curResults.Add(rowCol);
                 }
                 else
                 {
-                    if (block == curResults.Last().Item2)
+                    if (block == mainBoard[curResults.Last().X, curResults.Last().Y])
                     {
-                        curResults.Add((rowCol, (BlockType)block));
+                        curResults.Add(rowCol);
                     }
                     else
                     {
@@ -92,7 +95,7 @@ public partial class Mechanics : RefCounted
                         {
                             results.AddRange(curResults);
                         }
-                        curResults = new List<(Vector2I, BlockType)> { (rowCol, (BlockType)block) };
+                        curResults = new List<Vector2I> { rowCol };
                     }
                 }
             }
@@ -106,7 +109,7 @@ public partial class Mechanics : RefCounted
         // scan vertical lines
         for (int j = 0; j < numCol; j++)
         {
-            List<(Vector2I, BlockType)> curResults = new List<(Vector2I, BlockType)>();
+            List<Vector2I> curResults = new List<Vector2I>();
             for (int i = 0; i < numRow; i++)
             {
                 BlockType? block = mainBoard[i, j];
@@ -117,17 +120,17 @@ public partial class Mechanics : RefCounted
                     {
                         results.AddRange(curResults);
                     }
-                    curResults = new List<(Vector2I, BlockType)>();
+                    curResults = new List<Vector2I>();
                 }
                 else if (curResults.Count == 0)
                 {
-                    curResults.Add((rowCol, (BlockType)block));
+                    curResults.Add(rowCol);
                 }
                 else
                 {
-                    if (block == curResults.Last().Item2)
+                    if (block == mainBoard[curResults.Last().X, curResults.Last().Y])
                     {
-                        curResults.Add((rowCol, (BlockType)block));
+                        curResults.Add(rowCol);
                     }
                     else
                     {
@@ -135,7 +138,7 @@ public partial class Mechanics : RefCounted
                         {
                             results.AddRange(curResults);
                         }
-                        curResults = new List<(Vector2I, BlockType)> { (rowCol, (BlockType)block) };
+                        curResults = new List<Vector2I> { rowCol };
                     }
                 }
             }
