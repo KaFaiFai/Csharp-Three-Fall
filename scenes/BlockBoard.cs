@@ -7,9 +7,45 @@ public partial class BlockBoard : Node2D
     [Signal]
     public delegate void BoardResolvedEventHandler();
 
-    public BlockGrid BlockGrid { get; set; }
+    [Export]
+    public PackedScene BlockScene;
 
-    public void ResolveBoardForNewPolyomino(Polyomino polyomino, int leftIndex)
+    public BlockGrid BlockGrid { get; set; }
+    public List<Block> PreviewBlocks { get; set; } = new List<Block>();
+
+    public override void _Ready()
+    {
+        BlockGrid = GetNode<BlockGrid>("BlockGrid");
+    }
+
+    public void ClearPreview()
+    {
+        foreach (var block in PreviewBlocks)
+        {
+            block.QueueFree();
+        }
+        PreviewBlocks = new List<Block>();
+    }
+
+    public void UpdatePreviewPolyomino(Polyomino polyomino, int leftIndex)
+    {
+        ClearPreview();
+
+        List<(Vector2I, BlockType)> willDropTo =
+            Mechanics.WillDropTo(BlockGrid.ToBlockTypes(), polyomino.BlockGrid.ToBlockTypes(), leftIndex);
+        foreach (var (rowCol, type) in willDropTo)
+        {
+            Block newBlock = BlockScene.Instantiate<Block>();
+            newBlock.Type = type;
+            newBlock.Position = BlockGrid.GetCellPositionAt(rowCol);
+            newBlock.Modulate = new Color(newBlock.Modulate, 0.5f);
+            PreviewBlocks.Add(newBlock);
+            AddChild(newBlock);
+        }
+
+    }
+
+    public async void ResolveBoardForNewPolyomino(Polyomino polyomino, int leftIndex)
     {
         PlaceNewPolyomino(polyomino, leftIndex);
         bool toContinue = true;
@@ -20,6 +56,8 @@ public partial class BlockBoard : Node2D
             toContinue = DropFlyingBlocks();
             phase++;
         }
+        SceneTreeTimer timer = GetTree().CreateTimer(1);
+        await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
         EmitSignal(SignalName.BoardResolved);
     }
 

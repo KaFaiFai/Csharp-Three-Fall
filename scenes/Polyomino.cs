@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 public partial class Polyomino : Node2D
 {
@@ -19,11 +20,11 @@ public partial class Polyomino : Node2D
         BlockGrid.UpdateBlocksFromTypes(blockTypes);
     }
 
-    public void RotateClockwise() => Rotate(clockwise: true);
+    public async Task RotateClockwise() => await Rotate(clockwise: true);
 
-    public void RotateAnticlockwise() => Rotate(clockwise: false);
+    public async Task RotateAnticlockwise() => await Rotate(clockwise: false);
 
-    private async void Rotate(bool clockwise)
+    private async Task Rotate(bool clockwise)
     {
         List<(Vector2I, Vector2I)> gridRotations = BlockGrid.RotateCells(clockwise: clockwise);
         Vector2I rotatedRowCol = new Vector2I(BlockGrid.Blocks.GetLength(1), BlockGrid.Blocks.GetLength(0));
@@ -44,6 +45,7 @@ public partial class Polyomino : Node2D
         BlockGrid.Blocks = newBlocks;
         await ToSignal(_tween, Tween.SignalName.Finished);
         BlockGrid.RelocateBlocks();
+        return;
     }
 
     private Callable TweenRotation(Node2D scene, Vector2 targetPosition, bool clockwise)

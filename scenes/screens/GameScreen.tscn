@@ -19,7 +19,8 @@ position = Vector2(200, 500)
 [node name="BlockBoard" parent="." instance=ExtResource("2_24uro")]
 position = Vector2(568, 330)
 
-[connection signal="AnticlockwisePressed" from="InputEvents" to="CurrentPolyomino" method="RotateAnticlockwise"]
-[connection signal="ClockwisePressed" from="InputEvents" to="CurrentPolyomino" method="RotateClockwise"]
+[connection signal="AnticlockwisePressed" from="InputEvents" to="." method="RotateAnticlockwise"]
+[connection signal="ClockwisePressed" from="InputEvents" to="." method="RotateClockwise"]
+[connection signal="ConfirmPressed" from="InputEvents" to="." method="PlaceCurrentPolyomino"]
 [connection signal="LeftPressed" from="InputEvents" to="." method="MoveLeft"]
 [connection signal="RightPressed" from="InputEvents" to="." method="MoveRight"]
