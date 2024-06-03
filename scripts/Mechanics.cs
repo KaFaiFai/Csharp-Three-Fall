@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static Godot.HttpRequest;
 
 /// <summary>
 /// Contains core algorithms used in different phases of the game<br />
@@ -174,5 +175,71 @@ public partial class Mechanics : RefCounted
             }
         }
         return flyingBlocks;
+    }
+
+    static private List<List<int>> FindMatch3InLine(List<BlockType?> line)
+    {
+        List<List<int>> results = new List<List<int>>();
+        List<int> curResults = new List<int>();
+        for (int i = 0; i < line.Count; i++)
+        {
+            BlockType? block = line[i];
+            if (block == null)
+            {
+                if (curResults.Count >= 3)
+                {
+                    results.Add(curResults);
+                }
+                curResults = new List<int>();
+            }
+            else if (curResults.Count == 0)
+            {
+                curResults.Add(i);
+            }
+            else
+            {
+                if (block == line[i - 1])
+                {
+                    curResults.Add(i);
+                }
+                else
+                {
+                    if (curResults.Count >= 3)
+                    {
+                        results.Add(curResults);
+                    }
+                    curResults = new List<int> { i };
+                }
+            }
+        }
+        if (curResults.Count >= 3)
+        {
+            results.Add(curResults);
+        }
+        return results;
+    }
+
+    static private List<List<T>> MergeSublist<T>(List<List<T>> lists) where T : IEquatable<T>
+    {
+        List<List<T>> mergedLists = new List<List<T>> { };
+        foreach (List<T> list in lists)
+        {
+            bool hasAdded = false;
+            foreach (List<T> sublist in mergedLists)
+            {
+                IEnumerable<T> intersection = list.Intersect(sublist);
+                if (intersection.Any())
+                {
+                    sublist.AddRange(list.Except(sublist));
+                    hasAdded = false;
+                }
+            }
+            if (!hasAdded)
+            {
+                mergedLists.Add(list);
+            }
+        }
+
+        return mergedLists;
     }
 }
