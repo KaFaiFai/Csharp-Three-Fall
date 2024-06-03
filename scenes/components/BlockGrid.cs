@@ -97,4 +97,17 @@ public partial class BlockGrid : Node2D
             }
         }
     }
+
+    public BlockType?[,] ToBlockTypes()
+    {
+        BlockType?[,] blockTypes = new BlockType?[Blocks.GetLength(0), Blocks.GetLength(1)];
+        for (var i = 0; i < Blocks.GetLength(0); i++)
+        {
+            for (var j = 0; j < Blocks.GetLength(1); j++)
+            {
+                blockTypes[i, j] = Blocks[i, j]?.Type;
+            }
+        }
+        return blockTypes;
+    }
 }

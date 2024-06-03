@@ -1,7 +1,6 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 
 /// <summary>
@@ -10,14 +9,14 @@ using System.Linq;
 /// - <see cref="FindMatch3"/><br />
 /// - <see cref="FindFlyingBlocks"/><br />
 /// </summary>
-public partial class Mechanics : GodotObject
+public partial class Mechanics : RefCounted
 {
     /// <summary>
     /// Return the final positions and types the <paramref name="blocks"/> 
     /// will drop into <paramref name="mainBoard"/>. 
     /// The leftmost column index of the blocks is given by <paramref name="leftIndex"/>
     /// </summary>
-    public List<(Point, BlockType)> WillDropTo(BlockType?[,] mainBoard, BlockType?[,] blocks, int leftIndex)
+    static public List<(Vector2I, BlockType)> WillDropTo(BlockType?[,] mainBoard, BlockType?[,] blocks, int leftIndex)
     {
         // Top row is at 0 and bottom row is at NumRow - 1
         int numRow = mainBoard.GetLength(0);
@@ -36,7 +35,7 @@ public partial class Mechanics : GodotObject
             }
         }
 
-        List<(Point, BlockType)> dropTo = new List<(Point, BlockType)>();
+        List<(Vector2I, BlockType)> dropTo = new List<(Vector2I, BlockType)>();
         // Search from bottom to top
         for (int i = blocks.GetLength(0) - 1; i > -1; i--)
         {
@@ -46,7 +45,7 @@ public partial class Mechanics : GodotObject
                 {
                     BlockType block = (BlockType)blocks[i, j];
                     int col = leftIndex + j;
-                    dropTo.Add((new Point(lowestEmptySpace[col], col), block));
+                    dropTo.Add((new Vector2I(lowestEmptySpace[col], col), block));
                     lowestEmptySpace[col] -= 1;
                 }
             }
@@ -55,27 +54,27 @@ public partial class Mechanics : GodotObject
         return dropTo;
     }
 
-    public List<(Point, BlockType)> FindMatch3(BlockType?[,] mainBoard)
+    static public List<(Vector2I, BlockType)> FindMatch3(BlockType?[,] mainBoard)
     {
         int numRow = mainBoard.GetLength(0);
         int numCol = mainBoard.GetLength(1);
-        List<(Point, BlockType)> results = new List<(Point, BlockType)>();
+        List<(Vector2I, BlockType)> results = new List<(Vector2I, BlockType)>();
 
         // scan horizontal lines
         for (int i = 0; i < numRow; i++)
         {
-            List<(Point, BlockType)> curResults = new List<(Point, BlockType)>();
+            List<(Vector2I, BlockType)> curResults = new List<(Vector2I, BlockType)>();
             for (int j = 0; j < numCol; j++)
             {
                 BlockType? block = mainBoard[i, j];
-                Point rowCol = new Point(i, j);
+                Vector2I rowCol = new Vector2I(i, j);
                 if (block == null)
                 {
                     if (curResults.Count >= 3)
                     {
                         results.AddRange(curResults);
                     }
-                    curResults = new List<(Point, BlockType)>();
+                    curResults = new List<(Vector2I, BlockType)>();
                 }
                 else if (curResults.Count == 0)
                 {
@@ -93,7 +92,7 @@ public partial class Mechanics : GodotObject
                         {
                             results.AddRange(curResults);
                         }
-                        curResults = new List<(Point, BlockType)> { (rowCol, (BlockType)block) };
+                        curResults = new List<(Vector2I, BlockType)> { (rowCol, (BlockType)block) };
                     }
                 }
             }
@@ -107,18 +106,18 @@ public partial class Mechanics : GodotObject
         // scan vertical lines
         for (int j = 0; j < numCol; j++)
         {
-            List<(Point, BlockType)> curResults = new List<(Point, BlockType)>();
+            List<(Vector2I, BlockType)> curResults = new List<(Vector2I, BlockType)>();
             for (int i = 0; i < numRow; i++)
             {
                 BlockType? block = mainBoard[i, j];
-                Point rowCol = new Point(i, j);
+                Vector2I rowCol = new Vector2I(i, j);
                 if (block == null)
                 {
                     if (curResults.Count >= 3)
                     {
                         results.AddRange(curResults);
                     }
-                    curResults = new List<(Point, BlockType)>();
+                    curResults = new List<(Vector2I, BlockType)>();
                 }
                 else if (curResults.Count == 0)
                 {
@@ -136,7 +135,7 @@ public partial class Mechanics : GodotObject
                         {
                             results.AddRange(curResults);
                         }
-                        curResults = new List<(Point, BlockType)> { (rowCol, (BlockType)block) };
+                        curResults = new List<(Vector2I, BlockType)> { (rowCol, (BlockType)block) };
                     }
                 }
             }
@@ -148,11 +147,11 @@ public partial class Mechanics : GodotObject
         return results;
     }
 
-    public List<(Point, Point, BlockType)> FindFlyingBlocks(BlockType?[,] mainBoard)
+    static public List<(Vector2I, Vector2I, BlockType)> FindFlyingBlocks(BlockType?[,] mainBoard)
     {
         int numRow = mainBoard.GetLength(0);
         int numCol = mainBoard.GetLength(1);
-        List<(Point, Point, BlockType)> flyingBlocks = new List<(Point, Point, BlockType)>();
+        List<(Vector2I, Vector2I, BlockType)> flyingBlocks = new List<(Vector2I, Vector2I, BlockType)>();
         for (int j = 0; j < numCol; j++)
         {
             int numEmpty = 0;
@@ -164,8 +163,8 @@ public partial class Mechanics : GodotObject
                 }
                 else if (numEmpty != 0)
                 {
-                    Point start = new Point(i, j);
-                    Point end = new Point(i + numEmpty, j);
+                    Vector2I start = new Vector2I(i, j);
+                    Vector2I end = new Vector2I(i + numEmpty, j);
                     BlockType block = (BlockType)mainBoard[i, j];
                     flyingBlocks.Add((start, end, block));
                 }
