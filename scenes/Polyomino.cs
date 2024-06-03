@@ -7,7 +7,7 @@ using System.Runtime.CompilerServices;
 
 public partial class Polyomino : Node2D
 {
-    public BlockGrid BlockGrid;
+    public BlockGrid BlockGrid { get; set; }
 
     // For rotation animations
     private Tween _tween;

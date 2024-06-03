@@ -7,19 +7,7 @@ public partial class BlockBoard : Node2D
     [Signal]
     public delegate void BoardResolvedEventHandler();
 
-    public BlockGrid BlockGrid;
-
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-        BlockGrid = GetNode<BlockGrid>("BlockGrid");
-        BlockType?[,] blockTypes = new BlockType?[10, 6];
-        blockTypes[0, 0] = BlockType.a;
-        blockTypes[blockTypes.GetLength(0) - 1, 0] = BlockType.b;
-        blockTypes[0, blockTypes.GetLength(1) - 1] = BlockType.c;
-        blockTypes[blockTypes.GetLength(0) - 1, blockTypes.GetLength(1) - 1] = BlockType.d;
-        BlockGrid.UpdateBlocksFromTypes(blockTypes);
-    }
+    public BlockGrid BlockGrid { get; set; }
 
     public void ResolveBoardForNewPolyomino(Polyomino polyomino, int leftIndex)
     {

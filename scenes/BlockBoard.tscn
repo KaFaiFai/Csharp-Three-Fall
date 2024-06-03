@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://blrgac5gfmush" path="res://scenes/components/BlockGrid.tscn" id="3_eqlts"]
 
 [node name="BlockBoard" type="Node2D"]
-position = Vector2(595, 338)
 script = ExtResource("1_8iwdt")
 
 [node name="BlockGrid" parent="." instance=ExtResource("3_eqlts")]

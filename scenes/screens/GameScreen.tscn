@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://dhx47vi00y3el"]
+
+[ext_resource type="PackedScene" uid="uid://b12i7atr4i8gu" path="res://scenes/Polyomino.tscn" id="1_bg4fb"]
+[ext_resource type="Script" path="res://scenes/screens/GameScreen.cs" id="1_psoki"]
+[ext_resource type="PackedScene" uid="uid://bjmrato4y1a8w" path="res://scenes/components/InputEvents.tscn" id="2_1u1yh"]
+[ext_resource type="PackedScene" uid="uid://ckhwuulfvwjse" path="res://scenes/BlockBoard.tscn" id="2_24uro"]
+
+[node name="GameScreen" type="Node2D"]
+script = ExtResource("1_psoki")
+
+[node name="InputEvents" parent="." instance=ExtResource("2_1u1yh")]
+
+[node name="CurrentPolyomino" parent="." instance=ExtResource("1_bg4fb")]
+position = Vector2(200, 200)
+
+[node name="NextPolyomino" parent="." instance=ExtResource("1_bg4fb")]
+position = Vector2(200, 500)
+
+[node name="BlockBoard" parent="." instance=ExtResource("2_24uro")]
+position = Vector2(568, 330)
+
+[connection signal="AnticlockwisePressed" from="InputEvents" to="CurrentPolyomino" method="RotateAnticlockwise"]
+[connection signal="ClockwisePressed" from="InputEvents" to="CurrentPolyomino" method="RotateClockwise"]
+[connection signal="LeftPressed" from="InputEvents" to="." method="MoveLeft"]
+[connection signal="RightPressed" from="InputEvents" to="." method="MoveRight"]

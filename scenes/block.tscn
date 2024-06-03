@@ -3,7 +3,6 @@
 [ext_resource type="Script" path="res://scenes/Block.cs" id="1_j4msj"]
 
 [node name="Block" type="Node2D"]
-position = Vector2(585, 341)
 script = ExtResource("1_j4msj")
 metadata/_edit_group_ = true
 

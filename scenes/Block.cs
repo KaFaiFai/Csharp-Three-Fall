@@ -3,7 +3,7 @@ using System;
 
 public partial class Block : Node2D
 {
-    public BlockType Type { get; set; } = BlockType.d;
+    public BlockType Type { get; set; }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
