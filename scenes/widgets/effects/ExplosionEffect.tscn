@@ -1,0 +1,29 @@
+[gd_scene load_steps=4 format=3 uid="uid://dm3kthmony2qx"]
+
+[sub_resource type="Curve" id="Curve_xwydl"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.230769), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ma4gl"]
+curve = SubResource("Curve_xwydl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_772ps"]
+particle_flag_disable_z = true
+spread = 180.0
+initial_velocity_min = 10.0
+initial_velocity_max = 20.0
+gravity = Vector3(0, 0, 0)
+damping_min = 15.0
+damping_max = 20.0
+alpha_curve = SubResource("CurveTexture_ma4gl")
+hue_variation_min = -0.1
+hue_variation_max = 0.1
+
+[node name="ExplosionEffect" type="Node2D"]
+position = Vector2(292, 116)
+metadata/_edit_group_ = true
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+amount = 20
+process_material = SubResource("ParticleProcessMaterial_772ps")
+explosiveness = 1.0

@@ -9,9 +9,6 @@ public partial class StatHud : Control
     public int Phase { get; private set; } = 0;
     public int Combo { get; private set; } = 0;
 
-    /// <summary>
-    /// Represents, in each combo, the turn, the phase, the number of blocks removed and their blocktype
-    /// </summary>
     private List<(int turn, int phase, int numRemoved, BlockType)> BlockTypeCombos { get; set; } = new();
 
     private Label ScoreLabel { get; set; }
