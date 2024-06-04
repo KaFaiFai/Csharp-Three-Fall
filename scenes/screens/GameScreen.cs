@@ -15,6 +15,8 @@ public partial class GameScreen : Node2D
     private Polyomino _nextPolyomino { get; set; }
     private BlockBoard _blockBoard { get; set; }
 
+    private int _overflowFrom { get; set; } = 3;
+
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
@@ -26,7 +28,7 @@ public partial class GameScreen : Node2D
 
         AdvancePolyomino();
         AdvancePolyomino();
-        _blockBoard.BlockGrid.UpdateBlocksFromTypes(new BlockType?[10, 6]);
+        _blockBoard.BlockGrid.UpdateBlocksFromTypes(new BlockType?[10, 6]); // Top 4 rows are for overflow blocks
         WallKick();
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
 
@@ -72,12 +74,20 @@ public partial class GameScreen : Node2D
             _curPolyomino.BlockGrid.UpdateBlocksFromTypes(new BlockType?[0, 0]);
             IsPlacingDisabled = true;
             await task;
+            bool isValid = !HasOverflowBlocks();
 
-            IsPlacingDisabled = false;
-            AdvancePolyomino();
-            WallKick();
-            _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
-            EmitSignal(SignalName.EnteredNewTurn);
+            if (isValid)
+            {
+                IsPlacingDisabled = false;
+                AdvancePolyomino();
+                WallKick();
+                _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
+                EmitSignal(SignalName.EnteredNewTurn);
+            }
+            else
+            {
+                GD.Print("Has lost");
+            }
         }
     }
 
@@ -107,5 +117,17 @@ public partial class GameScreen : Node2D
         int baordWidth = _blockBoard.BlockGrid.Blocks.GetLength(1);
         int blocksWidth = _curPolyomino.BlockGrid.Blocks.GetLength(1);
         LeftIndex = Mechanics.WallKick(baordWidth, blocksWidth, LeftIndex);
+    }
+
+    private bool HasOverflowBlocks()
+    {
+        for (var i = 0; i <= _overflowFrom; i++)
+        {
+            for (var j = 0; j < _blockBoard.BlockGrid.Blocks.GetLength(1); j++)
+            {
+                if (_blockBoard.BlockGrid.Blocks[i, j] != null) return true;
+            }
+        }
+        return false;
     }
 }
