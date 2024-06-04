@@ -40,14 +40,14 @@ public partial class GameScreen : Node2D
 
     public async void RotateClockwise()
     {
-        await _curPolyomino.Rotate(clockwise: true);
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
+        await _curPolyomino.Rotate(clockwise: true);
     }
 
     public async void RotateAnticlockwise()
     {
-        await _curPolyomino.Rotate(clockwise: false);
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
+        await _curPolyomino.Rotate(clockwise: false);
     }
 
     public async void PlaceCurrentPolyomino()

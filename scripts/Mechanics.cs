@@ -68,9 +68,8 @@ public partial class Mechanics : RefCounted
         for (int i = 0; i < numRow; i++)
         {
             List<BlockType?> line = Enumerable.Range(0, numCol).Select(j => mainBoard[i, j]).ToList();
-            List<List<Vector2I>> match3InLine = FindMatch3InLine(line)
-                .Select(combo => combo.Select(j => new Vector2I(i, j)).ToList())
-                .ToList();
+            IEnumerable<List<Vector2I>> match3InLine = FindMatch3InLine(line)
+                .Select(combo => combo.Select(j => new Vector2I(i, j)).ToList());
             results.AddRange(match3InLine);
         }
 
@@ -78,9 +77,8 @@ public partial class Mechanics : RefCounted
         for (int j = 0; j < numCol; j++)
         {
             List<BlockType?> line = Enumerable.Range(0, numRow).Select(i => mainBoard[i, j]).ToList();
-            List<List<Vector2I>> match3InLine = FindMatch3InLine(line)
-                .Select(combo => combo.Select(i => new Vector2I(i, j)).ToList())
-                .ToList();
+            IEnumerable<List<Vector2I>> match3InLine = FindMatch3InLine(line)
+                .Select(combo => combo.Select(i => new Vector2I(i, j)).ToList());
             results.AddRange(match3InLine);
         }
 
@@ -155,25 +153,35 @@ public partial class Mechanics : RefCounted
         return results;
     }
 
+    /// <summary>
+    /// Merge lists if they have elements in commo and remove all duplicates
+    /// </summary>
     static private List<List<T>> MergeSublist<T>(List<List<T>> lists) where T : IEquatable<T>
     {
+        List<List<T>> remainingList = new List<List<T>>(lists);
         List<List<T>> mergedLists = new List<List<T>> { };
-        foreach (List<T> list in lists)
+        while (remainingList.Count > 0)
         {
-            bool hasAdded = false;
-            foreach (List<T> sublist in mergedLists)
+            List<T> first = new List<T>(remainingList.First());
+            remainingList.RemoveAt(0);
+            bool mergedNew;
+            do
             {
-                IEnumerable<T> intersection = list.Intersect(sublist);
-                if (intersection.Any())
+                mergedNew = false;
+                // loop from last to second to avoid bugs from remove elements
+                for (int i = remainingList.Count - 1; i > -1; i--)
                 {
-                    sublist.AddRange(list.Except(sublist));
-                    hasAdded = false;
+                    List<T> sublist = remainingList[i];
+                    IEnumerable<T> intersection = first.Intersect(sublist);
+                    if (intersection.Any())
+                    {
+                        first.AddRange(sublist.Except(first));
+                        mergedNew = true;
+                        remainingList.RemoveAt(i);
+                    }
                 }
-            }
-            if (!hasAdded)
-            {
-                mergedLists.Add(list);
-            }
+            } while (mergedNew); // loop again if there are new elements in the current list
+            mergedLists.Add(first);
         }
 
         return mergedLists;
