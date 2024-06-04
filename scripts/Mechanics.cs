@@ -13,6 +13,18 @@ using static Godot.HttpRequest;
 public partial class Mechanics : RefCounted
 {
     /// <summary>
+    /// Return a safe position inside the board for blocks of width <paramref name="blocksWidth"/> 
+    /// </summary>
+    static public int WallKick(int mainBoardWidth, int blocksWidth, int leftIndex)
+    {
+        if (mainBoardWidth < blocksWidth)
+            throw new ArgumentException($"Blocks have larger width {blocksWidth} than board {mainBoardWidth}");
+        if (leftIndex < 0) return 0;
+        if (leftIndex + blocksWidth > mainBoardWidth) return mainBoardWidth - blocksWidth;
+        else return leftIndex;
+    }
+
+    /// <summary>
     /// Return the start positions with respect to the original shape right above the top row, 
     /// final positions and types of the <paramref name="blocks"/> 
     /// that will drop into <paramref name="mainBoard"/>. 

@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Threading.Tasks;
 
 public partial class GameScreen : Node2D
 {
@@ -23,31 +24,38 @@ public partial class GameScreen : Node2D
         AdvancePolyomino();
         AdvancePolyomino();
         _blockBoard.BlockGrid.UpdateBlocksFromTypes(new BlockType?[10, 6]);
+        WallKick();
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
     }
 
     public void MoveLeft()
     {
         LeftIndex--;
+        WallKick();
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
     }
 
     public void MoveRight()
     {
         LeftIndex++;
+        WallKick();
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
     }
 
     public async void RotateClockwise()
     {
+        var task = _curPolyomino.Rotate(clockwise: true);
+        WallKick();
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
-        await _curPolyomino.Rotate(clockwise: true);
+        await task;
     }
 
     public async void RotateAnticlockwise()
     {
+        var task = _curPolyomino.Rotate(clockwise: false);
+        WallKick();
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
-        await _curPolyomino.Rotate(clockwise: false);
+        await task;
     }
 
     public async void PlaceCurrentPolyomino()
@@ -62,6 +70,7 @@ public partial class GameScreen : Node2D
 
             IsPlacingDisabled = false;
             AdvancePolyomino();
+            WallKick();
             _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
         }
     }
@@ -71,7 +80,7 @@ public partial class GameScreen : Node2D
         _curPolyomino.BlockGrid.UpdateBlocksFromTypes(_nextPolyomino.BlockGrid.ToBlockTypes());
 
         // TODO: Randomize shapes
-        bool[,] shape = new bool[,] { { true, false }, { true, true } };
+        bool[,] shape = new bool[,] { { true, false, false }, { true, true, true } };
         BlockType?[,] newBlockTypes = new BlockType?[shape.GetLength(0), shape.GetLength(1)];
         BlockType[] allBlockTypes = Enum.GetValues<BlockType>();
         for (int i = 0; i < shape.GetLength(0); i++)
@@ -85,5 +94,12 @@ public partial class GameScreen : Node2D
             }
         }
         _nextPolyomino.BlockGrid.UpdateBlocksFromTypes(newBlockTypes);
+    }
+
+    private void WallKick()
+    {
+        int baordWidth = _blockBoard.BlockGrid.Blocks.GetLength(1);
+        int blocksWidth = _curPolyomino.BlockGrid.Blocks.GetLength(1);
+        LeftIndex = Mechanics.WallKick(baordWidth, blocksWidth, LeftIndex);
     }
 }
