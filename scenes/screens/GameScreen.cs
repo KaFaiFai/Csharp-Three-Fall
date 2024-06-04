@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 public partial class GameScreen : Node2D
 {
+    [Signal]
+    public delegate void EnteredNewTurnEventHandler();
+
     public RandomNumberGenerator Rng { get; set; }
     public int LeftIndex { get; set; } = 0;
     public bool IsPlacingDisabled { get; set; } = false;
@@ -26,6 +29,8 @@ public partial class GameScreen : Node2D
         _blockBoard.BlockGrid.UpdateBlocksFromTypes(new BlockType?[10, 6]);
         WallKick();
         _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
+
+        EmitSignal(SignalName.EnteredNewTurn);
     }
 
     public void MoveLeft()
@@ -72,6 +77,7 @@ public partial class GameScreen : Node2D
             AdvancePolyomino();
             WallKick();
             _blockBoard.UpdatePreviewPolyomino(_curPolyomino, LeftIndex);
+            EmitSignal(SignalName.EnteredNewTurn);
         }
     }
 

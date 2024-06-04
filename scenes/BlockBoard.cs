@@ -5,6 +5,12 @@ using System.Threading.Tasks;
 
 public partial class BlockBoard : Node2D
 {
+    [Signal]
+    public delegate void EnteredPhaseEventHandler(int phase);
+
+    [Signal]
+    public delegate void BlocksRemovedEventHandler(int numRemoved, BlockType blockType);
+
     [Export]
     public PackedScene BlockScene;
 
@@ -44,13 +50,16 @@ public partial class BlockBoard : Node2D
 
     public async Task ResolveBoardForNewPolyomino(Polyomino polyomino, int leftIndex)
     {
-        await PlaceNewPolyomino(polyomino, leftIndex);
+        int phase = 1;
         bool toContinue = true;
-        int phase = 0;
         while (toContinue)
         {
-            await RemoveMatch3();
-            toContinue = await DropFlyingBlocks();
+            EmitSignal(SignalName.EnteredPhase, phase);
+            if (phase == 1)
+                await PlaceNewPolyomino(polyomino, leftIndex);
+            else
+                await DropFlyingBlocks();
+            toContinue = await RemoveMatch3();
             phase++;
         }
         SceneTreeTimer timer = GetTree().CreateTimer(1);
@@ -94,7 +103,9 @@ public partial class BlockBoard : Node2D
         for (var i = 0; i < match3RowCols.Count; i++)
         {
             double delay = i * 0.2;
-            foreach (var rowCol in match3RowCols[i])
+            List<Vector2I> curRowCols = match3RowCols[i];
+            EmitSignal(SignalName.BlocksRemoved, curRowCols.Count, (int)blockTypes[curRowCols[0].X, curRowCols[0].Y]);
+            foreach (var rowCol in curRowCols)
             {
                 Block block = BlockGrid.Blocks[rowCol.X, rowCol.Y];
                 tween.TweenProperty(block, "scale", new Vector2(0, 0), 1).SetDelay(delay);

@@ -6,6 +6,7 @@ using static Godot.HttpRequest;
 
 /// <summary>
 /// Contains core algorithms used in different phases of the game<br />
+/// - <see cref="WallKick"/><br />
 /// - <see cref="WillDropTo"/><br />
 /// - <see cref="FindMatch3"/><br />
 /// - <see cref="FindFlyingBlocks"/><br />
