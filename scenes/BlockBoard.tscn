@@ -1,12 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://ckhwuulfvwjse"]
+[gd_scene load_steps=5 format=3 uid="uid://ckhwuulfvwjse"]
 
 [ext_resource type="Script" path="res://scenes/BlockBoard.cs" id="1_8iwdt"]
 [ext_resource type="PackedScene" uid="uid://clgh8o5jhho6p" path="res://scenes/Block.tscn" id="2_3v365"]
+[ext_resource type="PackedScene" uid="uid://dm3kthmony2qx" path="res://scenes/widgets/effects/ExplosionEffect.tscn" id="3_7vonp"]
 [ext_resource type="PackedScene" uid="uid://blrgac5gfmush" path="res://scenes/components/BlockGrid.tscn" id="3_eqlts"]
 
 [node name="BlockBoard" type="Node2D"]
 script = ExtResource("1_8iwdt")
 BlockScene = ExtResource("2_3v365")
+ExplosionEffect = ExtResource("3_7vonp")
 
 [node name="BlockGrid" parent="." instance=ExtResource("3_eqlts")]
-BlockScene = ExtResource("2_3v365")

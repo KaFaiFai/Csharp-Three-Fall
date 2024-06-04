@@ -19,11 +19,9 @@ alpha_curve = SubResource("CurveTexture_ma4gl")
 hue_variation_min = -0.1
 hue_variation_max = 0.1
 
-[node name="ExplosionEffect" type="Node2D"]
-position = Vector2(292, 116)
-metadata/_edit_group_ = true
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+[node name="ExplosionEffect" type="GPUParticles2D"]
+emitting = false
 amount = 20
 process_material = SubResource("ParticleProcessMaterial_772ps")
+one_shot = true
 explosiveness = 1.0

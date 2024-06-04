@@ -13,6 +13,8 @@ public partial class BlockBoard : Node2D
 
     [Export]
     public PackedScene BlockScene;
+    [Export]
+    public PackedScene ExplosionEffect;
 
     public BlockGrid BlockGrid { get; set; }
     public List<Block> PreviewBlocks { get; set; } = new List<Block>();
@@ -98,17 +100,24 @@ public partial class BlockBoard : Node2D
         List<List<Vector2I>> match3RowCols = Mechanics.FindMatch3(blockTypes);
         if (match3RowCols.Count == 0) return false;
 
-        // play disappearing animation
         Tween tween = CreateTween().SetParallel();
         for (var i = 0; i < match3RowCols.Count; i++)
         {
             double delay = i * 0.2;
             List<Vector2I> curRowCols = match3RowCols[i];
-            EmitSignal(SignalName.BlocksRemoved, curRowCols.Count, (int)blockTypes[curRowCols[0].X, curRowCols[0].Y]);
+            BlockType? curType = blockTypes[curRowCols[0].X, curRowCols[0].Y];
+            EmitSignal(SignalName.BlocksRemoved, curRowCols.Count, (int)curType);
             foreach (var rowCol in curRowCols)
             {
+                // play disappearing animation and explosion effect
                 Block block = BlockGrid.Blocks[rowCol.X, rowCol.Y];
                 tween.TweenProperty(block, "scale", new Vector2(0, 0), 1).SetDelay(delay);
+
+                GpuParticles2D explosionEffect = ExplosionEffect.Instantiate<GpuParticles2D>();
+                explosionEffect.Position = BlockGrid.GetCellPositionAt(rowCol);
+                explosionEffect.Emitting = true;
+                AddChild(explosionEffect);
+                explosionEffect.Finished += () => explosionEffect.QueueFree();
             }
         }
         await ToSignal(tween, Tween.SignalName.Finished);
