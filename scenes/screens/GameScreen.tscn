@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://dhx47vi00y3el"]
+[gd_scene load_steps=12 format=3 uid="uid://dhx47vi00y3el"]
 
 [ext_resource type="PackedScene" uid="uid://b12i7atr4i8gu" path="res://scenes/Polyomino.tscn" id="1_bg4fb"]
 [ext_resource type="Script" path="res://scenes/screens/GameScreen.cs" id="1_psoki"]
@@ -10,25 +10,15 @@
 [ext_resource type="Script" path="res://scenes/screens/GameScreenPlacingState.cs" id="8_i5wqa"]
 [ext_resource type="Script" path="res://scenes/screens/GameScreenGameOverState.cs" id="9_0qo1h"]
 [ext_resource type="Script" path="res://scenes/screens/GameScreenStartState.cs" id="10_5j4ts"]
+[ext_resource type="PackedScene" uid="uid://bcvdaes1sa5a1" path="res://scenes/widgets/WithLabel.tscn" id="11_elty7"]
 
 [node name="GameScreen" type="Node2D" node_paths=PackedStringArray("CurPolyomino", "NextPolyomino", "BlockBoard")]
 script = ExtResource("1_psoki")
-CurPolyomino = NodePath("CurrentPolyomino")
-NextPolyomino = NodePath("NextPolyomino")
-BlockBoard = NodePath("BlockBoard")
+CurPolyomino = NodePath("View/CurWithLabel/VBoxContainer/CenterContainer/Control/CurPolyomino")
+NextPolyomino = NodePath("View/NextWithLabel/VBoxContainer/CenterContainer/Control/NextPolyomino")
+BlockBoard = NodePath("View/BlockBoardPosition/BlockBoard")
 
 [node name="InputEvents" parent="." instance=ExtResource("2_1u1yh")]
-
-[node name="CurrentPolyomino" parent="." instance=ExtResource("1_bg4fb")]
-position = Vector2(200, 200)
-
-[node name="NextPolyomino" parent="." instance=ExtResource("1_bg4fb")]
-position = Vector2(200, 500)
-
-[node name="BlockBoard" parent="." instance=ExtResource("2_24uro")]
-position = Vector2(568, 330)
-
-[node name="StatHud" parent="." instance=ExtResource("5_33b5r")]
 
 [node name="GameScreenStateMachine" type="Node" parent="." node_paths=PackedStringArray("InitialState")]
 script = ExtResource("6_8ilq0")
@@ -52,5 +42,59 @@ script = ExtResource("10_5j4ts")
 _inputEvents = NodePath("../../InputEvents")
 GameScreen = NodePath("../..")
 
-[connection signal="BlocksRemoved" from="BlockBoard" to="StatHud" method="OnNewCombo"]
-[connection signal="EnteredPhase" from="BlockBoard" to="StatHud" method="OnPhase"]
+[node name="View" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="StatHud" parent="View" instance=ExtResource("5_33b5r")]
+layout_mode = 0
+anchors_preset = 0
+anchor_right = 0.0
+anchor_bottom = 0.0
+grow_horizontal = 1
+grow_vertical = 1
+
+[node name="BlockBoardPosition" type="Control" parent="View"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_group_ = true
+
+[node name="BlockBoard" parent="View/BlockBoardPosition" instance=ExtResource("2_24uro")]
+
+[node name="CurWithLabel" parent="View" instance=ExtResource("11_elty7")]
+layout_mode = 1
+offset_left = 160.0
+offset_top = -210.0
+offset_right = 380.0
+offset_bottom = -20.0
+
+[node name="Label" parent="View/CurWithLabel/VBoxContainer" index="0"]
+text = "Current"
+
+[node name="CurPolyomino" parent="View/CurWithLabel/VBoxContainer/CenterContainer/Control" index="0" instance=ExtResource("1_bg4fb")]
+
+[node name="NextWithLabel" parent="View" instance=ExtResource("11_elty7")]
+layout_mode = 1
+offset_left = 160.0
+offset_top = 54.0
+offset_right = 380.0
+offset_bottom = 244.0
+
+[node name="Label" parent="View/NextWithLabel/VBoxContainer" index="0"]
+text = "Next"
+
+[node name="NextPolyomino" parent="View/NextWithLabel/VBoxContainer/CenterContainer/Control" index="0" instance=ExtResource("1_bg4fb")]
+
+[connection signal="BlocksRemoved" from="View/BlockBoardPosition/BlockBoard" to="View/StatHud" method="OnNewCombo"]
+[connection signal="EnteredPhase" from="View/BlockBoardPosition/BlockBoard" to="View/StatHud" method="OnPhase"]
+
+[editable path="View/CurWithLabel"]
+[editable path="View/NextWithLabel"]
