@@ -16,8 +16,7 @@ public partial class Polyomino : Node2D
     public override void _Ready()
     {
         BlockGrid = GetNode<BlockGrid>("BlockGrid");
-        BlockType?[,] blockTypes = new BlockType?[,] { { BlockType.a, BlockType.b }, { null, BlockType.c } };
-        BlockGrid.UpdateBlocksFromTypes(blockTypes);
+        BlockGrid.UpdateBlocksFromTypes(new BlockType?[0, 0]);
     }
 
     public async Task Rotate(bool clockwise)
