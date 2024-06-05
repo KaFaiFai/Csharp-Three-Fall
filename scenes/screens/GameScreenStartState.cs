@@ -22,7 +22,7 @@ public partial class GameScreenStartState : GameScreenState
         BlockBoard.BlockGrid.UpdateBlocksFromTypes(new BlockType?[GameScreen.BoardSize.X, GameScreen.BoardSize.Y]);
         GameScreen.WallKick();
         BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameScreen.LeftIndex);
-        BlockBoard.DrawGridLines();
+        BlockBoard.DrawGridLines(GameScreen.OverflowFrom + 1);
         EmitSignal(SignalName.Transitioned, "GameScreenInputState");
     }
 

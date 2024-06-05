@@ -16,6 +16,7 @@ public partial class Polyomino : Node2D
     public override void _Ready()
     {
         BlockGrid = GetNode<BlockGrid>("BlockGrid");
+        BlockGrid.CellSize = 45;
         BlockGrid.UpdateBlocksFromTypes(new BlockType?[0, 0]);
     }
 

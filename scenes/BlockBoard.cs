@@ -35,13 +35,16 @@ public partial class BlockBoard : Node2D
         GridLines = new List<Line2D>();
     }
 
-    public void DrawGridLines()
+    /// <summary>
+    /// Only start drawing grid lines from <paramref name="topRow"/>
+    /// </summary>
+    public void DrawGridLines(int topRow)
     {
         if (BlockGrid == null || BlockGrid.Blocks == null) throw new ArgumentException();
 
         int numRow = BlockGrid.Blocks.GetLength(0);
         int numCol = BlockGrid.Blocks.GetLength(1);
-        for (int i = 0; i < numRow + 1; i++)
+        for (int i = topRow; i < numRow + 1; i++)
         {
             Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(i - 1, -1))
                 + BlockGrid.GetCellPositionAt(new Vector2I(i, 0))) / 2;
@@ -53,8 +56,8 @@ public partial class BlockBoard : Node2D
         }
         for (int j = 0; j < numCol + 1; j++)
         {
-            Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(-1, j - 1))
-                + BlockGrid.GetCellPositionAt(new Vector2I(0, j))) / 2;
+            Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(topRow - 1, j - 1))
+                + BlockGrid.GetCellPositionAt(new Vector2I(topRow, j))) / 2;
             Vector2 to = (BlockGrid.GetCellPositionAt(new Vector2I(numRow - 1, j - 1))
                 + BlockGrid.GetCellPositionAt(new Vector2I(numRow, j))) / 2;
             Line2D newLine = new Line2D() { Width = 3, Points = new Vector2[] { from, to } };

@@ -14,7 +14,7 @@
 
 [node name="GameScreen" type="Node2D" node_paths=PackedStringArray("CurPolyomino", "NextPolyomino", "BlockBoard")]
 script = ExtResource("1_psoki")
-CurPolyomino = NodePath("View/CurWithLabel/VBoxContainer/CenterContainer/Control/CurPolyomino")
+CurPolyomino = NodePath("View/CurPolyomino")
 NextPolyomino = NodePath("View/NextWithLabel/VBoxContainer/CenterContainer/Control/NextPolyomino")
 BlockBoard = NodePath("View/BlockBoardPosition/BlockBoard")
 
@@ -69,17 +69,8 @@ metadata/_edit_group_ = true
 
 [node name="BlockBoard" parent="View/BlockBoardPosition" instance=ExtResource("2_24uro")]
 
-[node name="CurWithLabel" parent="View" instance=ExtResource("11_elty7")]
-layout_mode = 1
-offset_left = 259.0
-offset_top = -220.0
-offset_right = 479.0
-offset_bottom = -30.0
-
-[node name="Label" parent="View/CurWithLabel/VBoxContainer" index="0"]
-text = "Current"
-
-[node name="CurPolyomino" parent="View/CurWithLabel/VBoxContainer/CenterContainer/Control" index="0" instance=ExtResource("1_bg4fb")]
+[node name="CurPolyomino" parent="View" instance=ExtResource("1_bg4fb")]
+position = Vector2(945, 225)
 
 [node name="NextWithLabel" parent="View" instance=ExtResource("11_elty7")]
 layout_mode = 1
@@ -92,10 +83,10 @@ offset_bottom = 234.0
 text = "Next"
 
 [node name="NextPolyomino" parent="View/NextWithLabel/VBoxContainer/CenterContainer/Control" index="0" instance=ExtResource("1_bg4fb")]
+scale = Vector2(0.7, 0.7)
 
 [connection signal="EnteredNewTurn" from="GameScreenStateMachine/GameScreenInputState" to="View/StatHud" method="OnNewTurn"]
 [connection signal="BlocksRemoved" from="View/BlockBoardPosition/BlockBoard" to="View/StatHud" method="OnNewCombo"]
 [connection signal="EnteredPhase" from="View/BlockBoardPosition/BlockBoard" to="View/StatHud" method="OnPhase"]
 
-[editable path="View/CurWithLabel"]
 [editable path="View/NextWithLabel"]
