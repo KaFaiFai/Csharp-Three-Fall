@@ -7,7 +7,7 @@ public partial class BlockGrid : Node2D
     [Export]
     public PackedScene BlockScene;
 
-    public float CellSize { get; set; } = 50;
+    public float CellSize { get; set; } = 40;
     public Block[,] Blocks { get; set; }
 
     /// <summary>

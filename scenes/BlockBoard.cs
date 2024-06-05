@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 public partial class BlockBoard : Node2D
@@ -20,6 +21,8 @@ public partial class BlockBoard : Node2D
     public BlockGrid BlockGrid { get; set; }
     public List<Block> PreviewBlocks { get; set; } = new List<Block>();
     public List<Line2D> GridLines { get; set; } = new List<Line2D> { };
+
+    public float BlockDropSpeed { get; set; } = 1000;
 
     public override void _Ready()
     {
@@ -44,7 +47,7 @@ public partial class BlockBoard : Node2D
 
         int numRow = BlockGrid.Blocks.GetLength(0);
         int numCol = BlockGrid.Blocks.GetLength(1);
-        for (int i = topRow; i < numRow + 1; i++)
+        foreach (int i in new List<int> { topRow, numRow })
         {
             Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(i - 1, -1))
                 + BlockGrid.GetCellPositionAt(new Vector2I(i, 0))) / 2;
@@ -54,7 +57,7 @@ public partial class BlockBoard : Node2D
             AddChild(newLine);
             GridLines.Add(newLine);
         }
-        for (int j = 0; j < numCol + 1; j++)
+        foreach (int j in new List<int> { 0, numCol })
         {
             Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(topRow - 1, j - 1))
                 + BlockGrid.GetCellPositionAt(new Vector2I(topRow, j))) / 2;
@@ -106,11 +109,11 @@ public partial class BlockBoard : Node2D
             await ToSignal(GetTree().CreateTimer(0.2), Timer.SignalName.Timeout);
 
             toContinue = await RemoveMatch3();
-            await ToSignal(GetTree().CreateTimer(0.2), Timer.SignalName.Timeout);
+            await ToSignal(GetTree().CreateTimer(0.1), Timer.SignalName.Timeout);
             phase++;
         }
-        SceneTreeTimer timer = GetTree().CreateTimer(0.3);
-        await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
+        //SceneTreeTimer timer = GetTree().CreateTimer(0.1);
+        //await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
     }
 
     private async Task PlaceNewPolyomino(Polyomino polyomino, int leftIndex)
@@ -127,7 +130,9 @@ public partial class BlockBoard : Node2D
             block.Position = BlockGrid.GetCellPositionAt(from);
             block.Type = type;
             AddChild(block);
-            tween.TweenProperty(block, "position", BlockGrid.GetCellPositionAt(to), 1);
+            double duration = (BlockGrid.GetCellPositionAt(from) - BlockGrid.GetCellPositionAt(to)).Length()
+                / BlockDropSpeed;
+            tween.TweenProperty(block, "position", BlockGrid.GetCellPositionAt(to), duration);
             tween.Finished += () => block.QueueFree();
         }
         await ToSignal(tween, Tween.SignalName.Finished);
@@ -149,15 +154,19 @@ public partial class BlockBoard : Node2D
         Tween tween = CreateTween().SetParallel();
         for (var i = 0; i < match3RowCols.Count; i++)
         {
-            double delay = i * 0.5;
+            double delay = i * 0.4;
             List<Vector2I> curRowCols = match3RowCols[i];
             BlockType? curType = blockTypes[curRowCols[0].X, curRowCols[0].Y];
             EmitSignal(SignalName.BlocksRemoved, curRowCols.Count, (int)curType);
+            Vector2 comboCenter = curRowCols
+                .Select(rowCol => BlockGrid.GetCellPositionAt(rowCol))
+                .Aggregate(Vector2.Zero, (value, newPos) => value + newPos) / curRowCols.Count();
             foreach (var rowCol in curRowCols)
             {
                 // play disappearing animation
                 Block block = BlockGrid.Blocks[rowCol.X, rowCol.Y];
-                tween.TweenProperty(block, "scale", new Vector2(0, 0), 1).SetDelay(delay);
+                tween.TweenProperty(block, "scale", new Vector2(0, 0), 0.2).SetDelay(delay);
+                tween.TweenProperty(block, "position", comboCenter, 0.2).SetDelay(delay);
 
                 // play explosion effect
                 GpuParticles2D explosionEffect = ExplosionEffect.Instantiate<GpuParticles2D>();
@@ -171,7 +180,7 @@ public partial class BlockBoard : Node2D
             GetTree().CreateTimer(delay).Timeout += () =>
             {
                 ComboSfxPlayer.Play();
-                ComboSfxPlayer.PitchScale += 0.1f;
+                ComboSfxPlayer.PitchScale = Math.Min(ComboSfxPlayer.PitchScale + 0.1f, 1.5f);
             };
 
         }
@@ -199,7 +208,9 @@ public partial class BlockBoard : Node2D
         foreach (var (from, to, type) in flyingBlocks)
         {
             Block block = BlockGrid.Blocks[from.X, from.Y];
-            tween.TweenProperty(block, "position", BlockGrid.GetCellPositionAt(to), 1);
+            double duration = (BlockGrid.GetCellPositionAt(from) - BlockGrid.GetCellPositionAt(to)).Length()
+                / BlockDropSpeed;
+            tween.TweenProperty(block, "position", BlockGrid.GetCellPositionAt(to), duration);
             tween.Finished += () => block.QueueFree();
         }
         await ToSignal(tween, Tween.SignalName.Finished);

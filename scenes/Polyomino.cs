@@ -16,7 +16,6 @@ public partial class Polyomino : Node2D
     public override void _Ready()
     {
         BlockGrid = GetNode<BlockGrid>("BlockGrid");
-        BlockGrid.CellSize = 45;
         BlockGrid.UpdateBlocksFromTypes(new BlockType?[0, 0]);
     }
 
@@ -35,7 +34,13 @@ public partial class Polyomino : Node2D
             {
                 newBlocks[to.X, to.Y] = block;
                 Vector2 targetPosition = BlockGrid.GetCellPositionAt(rotatedRowCol, BlockGrid.CellSize, to);
-                Tween.TweenMethod(TweenRotation(block, targetPosition, clockwise), 0f, 1f, 1.0f);
+                Tween.TweenMethod(TweenRotation(block, targetPosition, clockwise), 0f, 1f, 0.3f)
+                    .SetEase(Tween.EaseType.InOut)
+                    .SetTrans(Tween.TransitionType.Back);
+                double rotation = clockwise ? Math.PI / 2 : -Math.PI / 2;
+                Tween.TweenProperty(block, "rotation", block.Rotation + rotation, 0.3f)
+                    .SetEase(Tween.EaseType.InOut)
+                    .SetTrans(Tween.TransitionType.Back);
             }
         }
         BlockGrid.Blocks = newBlocks;
