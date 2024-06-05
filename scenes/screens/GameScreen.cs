@@ -5,28 +5,21 @@ using System.Threading.Tasks;
 public partial class GameScreen : Node2D
 {
     public RandomNumberGenerator Rng { get; set; }
-    public int LeftIndex { get; set; } = 0;
+    public int LeftIndex { get; set; }
 
+    [Export]
     public Polyomino CurPolyomino { get; private set; }
+    [Export]
     public Polyomino NextPolyomino { get; private set; }
+    [Export]
     public BlockBoard BlockBoard { get; private set; }
 
-    public int OverflowFrom { get; set; } = 3;
+    public Vector2I BoardSize { get; init; } = new Vector2I(10, 6); // Some top rows are for overflow blocks
+    public int OverflowFrom { get; init; } = 3;
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        Rng = new RandomNumberGenerator() { Seed = 0 };
-
-        CurPolyomino = GetNode<Polyomino>("CurrentPolyomino");
-        NextPolyomino = GetNode<Polyomino>("NextPolyomino");
-        BlockBoard = GetNode<BlockBoard>("BlockBoard");
-
-        AdvancePolyomino();
-        AdvancePolyomino();
-        BlockBoard.BlockGrid.UpdateBlocksFromTypes(new BlockType?[10, 6]); // Some top rows are for overflow blocks
-        WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, LeftIndex);
     }
 
     public void AdvancePolyomino()

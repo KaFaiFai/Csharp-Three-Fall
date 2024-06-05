@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://dhx47vi00y3el"]
+[gd_scene load_steps=11 format=3 uid="uid://dhx47vi00y3el"]
 
 [ext_resource type="PackedScene" uid="uid://b12i7atr4i8gu" path="res://scenes/Polyomino.tscn" id="1_bg4fb"]
 [ext_resource type="Script" path="res://scenes/screens/GameScreen.cs" id="1_psoki"]
@@ -9,9 +9,13 @@
 [ext_resource type="Script" path="res://scenes/screens/GameScreenInputState.cs" id="6_fmebs"]
 [ext_resource type="Script" path="res://scenes/screens/GameScreenPlacingState.cs" id="8_i5wqa"]
 [ext_resource type="Script" path="res://scenes/screens/GameScreenGameOverState.cs" id="9_0qo1h"]
+[ext_resource type="Script" path="res://scenes/screens/GameScreenStartState.cs" id="10_5j4ts"]
 
-[node name="GameScreen" type="Node2D"]
+[node name="GameScreen" type="Node2D" node_paths=PackedStringArray("CurPolyomino", "NextPolyomino", "BlockBoard")]
 script = ExtResource("1_psoki")
+CurPolyomino = NodePath("CurrentPolyomino")
+NextPolyomino = NodePath("NextPolyomino")
+BlockBoard = NodePath("BlockBoard")
 
 [node name="InputEvents" parent="." instance=ExtResource("2_1u1yh")]
 
@@ -28,7 +32,7 @@ position = Vector2(568, 330)
 
 [node name="GameScreenStateMachine" type="Node" parent="." node_paths=PackedStringArray("InitialState")]
 script = ExtResource("6_8ilq0")
-InitialState = NodePath("GameScreenInputState")
+InitialState = NodePath("GameScreenStartState")
 
 [node name="GameScreenInputState" type="Node" parent="GameScreenStateMachine" node_paths=PackedStringArray("_inputEvents", "GameScreen")]
 script = ExtResource("6_fmebs")
@@ -41,6 +45,11 @@ GameScreen = NodePath("../..")
 
 [node name="GameScreenGameOverState" type="Node" parent="GameScreenStateMachine" node_paths=PackedStringArray("GameScreen")]
 script = ExtResource("9_0qo1h")
+GameScreen = NodePath("../..")
+
+[node name="GameScreenStartState" type="Node" parent="GameScreenStateMachine" node_paths=PackedStringArray("_inputEvents", "GameScreen")]
+script = ExtResource("10_5j4ts")
+_inputEvents = NodePath("../../InputEvents")
 GameScreen = NodePath("../..")
 
 [connection signal="BlocksRemoved" from="BlockBoard" to="StatHud" method="OnNewCombo"]

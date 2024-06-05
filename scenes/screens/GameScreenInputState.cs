@@ -21,7 +21,7 @@ public partial class GameScreenInputState : GameScreenState
 
     public override void OnExit()
     {
-        CurPolyomino.Tween.Kill();
+        CurPolyomino.Tween?.Kill();
         _inputEvents.LeftPressed -= MoveLeft;
         _inputEvents.RightPressed -= MoveRight;
         _inputEvents.ClockwisePressed -= RotateClockwise;
