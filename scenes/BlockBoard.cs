@@ -7,7 +7,6 @@ public partial class BlockBoard : Node2D
 {
     [Signal]
     public delegate void EnteredPhaseEventHandler(int phase);
-
     [Signal]
     public delegate void BlocksRemovedEventHandler(int numRemoved, BlockType blockType);
 
@@ -15,6 +14,8 @@ public partial class BlockBoard : Node2D
     public PackedScene BlockScene;
     [Export]
     public PackedScene ExplosionEffect;
+    [Export]
+    public AudioStreamPlayer ComboSfxPlayer;
 
     public BlockGrid BlockGrid { get; set; }
     public List<Block> PreviewBlocks { get; set; } = new List<Block>();
@@ -61,10 +62,13 @@ public partial class BlockBoard : Node2D
                 await PlaceNewPolyomino(polyomino, leftIndex);
             else
                 await DropFlyingBlocks();
+            await ToSignal(GetTree().CreateTimer(0.2), Timer.SignalName.Timeout);
+
             toContinue = await RemoveMatch3();
+            await ToSignal(GetTree().CreateTimer(0.2), Timer.SignalName.Timeout);
             phase++;
         }
-        SceneTreeTimer timer = GetTree().CreateTimer(1);
+        SceneTreeTimer timer = GetTree().CreateTimer(0.3);
         await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
     }
 
@@ -100,25 +104,35 @@ public partial class BlockBoard : Node2D
         List<List<Vector2I>> match3RowCols = Mechanics.FindMatch3(blockTypes);
         if (match3RowCols.Count == 0) return false;
 
+        ComboSfxPlayer.PitchScale = 1;
         Tween tween = CreateTween().SetParallel();
         for (var i = 0; i < match3RowCols.Count; i++)
         {
-            double delay = i * 0.2;
+            double delay = i * 0.5;
             List<Vector2I> curRowCols = match3RowCols[i];
             BlockType? curType = blockTypes[curRowCols[0].X, curRowCols[0].Y];
             EmitSignal(SignalName.BlocksRemoved, curRowCols.Count, (int)curType);
             foreach (var rowCol in curRowCols)
             {
-                // play disappearing animation and explosion effect
+                // play disappearing animation
                 Block block = BlockGrid.Blocks[rowCol.X, rowCol.Y];
                 tween.TweenProperty(block, "scale", new Vector2(0, 0), 1).SetDelay(delay);
 
+                // play explosion effect
                 GpuParticles2D explosionEffect = ExplosionEffect.Instantiate<GpuParticles2D>();
                 explosionEffect.Position = BlockGrid.GetCellPositionAt(rowCol);
                 explosionEffect.Emitting = true;
                 AddChild(explosionEffect);
                 explosionEffect.Finished += () => explosionEffect.QueueFree();
             }
+
+            // play combo sfx
+            GetTree().CreateTimer(delay).Timeout += () =>
+            {
+                ComboSfxPlayer.Play();
+                ComboSfxPlayer.PitchScale += 0.1f;
+            };
+
         }
         await ToSignal(tween, Tween.SignalName.Finished);
 
