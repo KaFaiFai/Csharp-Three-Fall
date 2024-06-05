@@ -11,7 +11,7 @@ public partial class Polyomino : Node2D
     public BlockGrid BlockGrid { get; set; }
 
     // For rotation animations
-    private Tween _tween;
+    public Tween Tween { get; private set; }
 
     public override void _Ready()
     {
@@ -26,8 +26,8 @@ public partial class Polyomino : Node2D
         Vector2I rotatedRowCol = new Vector2I(BlockGrid.Blocks.GetLength(1), BlockGrid.Blocks.GetLength(0));
 
         Block[,] newBlocks = new Block[rotatedRowCol.X, rotatedRowCol.Y];
-        _tween?.Kill();
-        _tween = CreateTween().SetParallel();
+        Tween?.Kill();
+        Tween = CreateTween().SetParallel();
         foreach (var (from, to) in gridRotations)
         {
             Block block = BlockGrid.Blocks[from.X, from.Y];
@@ -35,11 +35,11 @@ public partial class Polyomino : Node2D
             {
                 newBlocks[to.X, to.Y] = block;
                 Vector2 targetPosition = BlockGrid.GetCellPositionAt(rotatedRowCol, BlockGrid.CellSize, to);
-                _tween.TweenMethod(TweenRotation(block, targetPosition, clockwise), 0f, 1f, 1.0f);
+                Tween.TweenMethod(TweenRotation(block, targetPosition, clockwise), 0f, 1f, 1.0f);
             }
         }
         BlockGrid.Blocks = newBlocks;
-        await ToSignal(_tween, Tween.SignalName.Finished);
+        await ToSignal(Tween, Tween.SignalName.Finished);
         BlockGrid.RelocateBlocks();
         return;
     }
