@@ -19,10 +19,48 @@ public partial class BlockBoard : Node2D
 
     public BlockGrid BlockGrid { get; set; }
     public List<Block> PreviewBlocks { get; set; } = new List<Block>();
+    public List<Line2D> GridLines { get; set; } = new List<Line2D> { };
 
     public override void _Ready()
     {
         BlockGrid = GetNode<BlockGrid>("BlockGrid");
+    }
+
+    public void ClearGridLines()
+    {
+        foreach (var line in GridLines)
+        {
+            line.QueueFree();
+        }
+        GridLines = new List<Line2D>();
+    }
+
+    public void DrawGridLines()
+    {
+        if (BlockGrid == null || BlockGrid.Blocks == null) throw new ArgumentException();
+
+        int numRow = BlockGrid.Blocks.GetLength(0);
+        int numCol = BlockGrid.Blocks.GetLength(1);
+        for (int i = 0; i < numRow + 1; i++)
+        {
+            Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(i - 1, -1))
+                + BlockGrid.GetCellPositionAt(new Vector2I(i, 0))) / 2;
+            Vector2 to = (BlockGrid.GetCellPositionAt(new Vector2I(i - 1, numCol - 1))
+                + BlockGrid.GetCellPositionAt(new Vector2I(i, numCol))) / 2;
+            Line2D newLine = new Line2D() { Width = 3, Points = new Vector2[] { from, to } };
+            AddChild(newLine);
+            GridLines.Add(newLine);
+        }
+        for (int j = 0; j < numCol + 1; j++)
+        {
+            Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(-1, j - 1))
+                + BlockGrid.GetCellPositionAt(new Vector2I(0, j))) / 2;
+            Vector2 to = (BlockGrid.GetCellPositionAt(new Vector2I(numRow - 1, j - 1))
+                + BlockGrid.GetCellPositionAt(new Vector2I(numRow, j))) / 2;
+            Line2D newLine = new Line2D() { Width = 3, Points = new Vector2[] { from, to } };
+            AddChild(newLine);
+            GridLines.Add(newLine);
+        }
     }
 
     public void ClearPreview()

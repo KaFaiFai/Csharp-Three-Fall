@@ -10,7 +10,7 @@
 [ext_resource type="Script" path="res://scenes/screens/GameScreenPlacingState.cs" id="8_i5wqa"]
 [ext_resource type="Script" path="res://scenes/screens/GameScreenGameOverState.cs" id="9_0qo1h"]
 [ext_resource type="Script" path="res://scenes/screens/GameScreenStartState.cs" id="10_5j4ts"]
-[ext_resource type="PackedScene" uid="uid://bcvdaes1sa5a1" path="res://scenes/widgets/WithLabel.tscn" id="11_elty7"]
+[ext_resource type="PackedScene" uid="uid://6ign5qrjsbhf" path="res://scenes/widgets/WithLabel.tscn" id="11_elty7"]
 
 [node name="GameScreen" type="Node2D" node_paths=PackedStringArray("CurPolyomino", "NextPolyomino", "BlockBoard")]
 script = ExtResource("1_psoki")
@@ -71,10 +71,10 @@ metadata/_edit_group_ = true
 
 [node name="CurWithLabel" parent="View" instance=ExtResource("11_elty7")]
 layout_mode = 1
-offset_left = 160.0
-offset_top = -210.0
-offset_right = 380.0
-offset_bottom = -20.0
+offset_left = 259.0
+offset_top = -220.0
+offset_right = 479.0
+offset_bottom = -30.0
 
 [node name="Label" parent="View/CurWithLabel/VBoxContainer" index="0"]
 text = "Current"
@@ -83,16 +83,17 @@ text = "Current"
 
 [node name="NextWithLabel" parent="View" instance=ExtResource("11_elty7")]
 layout_mode = 1
-offset_left = 160.0
-offset_top = 54.0
-offset_right = 380.0
-offset_bottom = 244.0
+offset_left = 259.0
+offset_top = 44.0
+offset_right = 479.0
+offset_bottom = 234.0
 
 [node name="Label" parent="View/NextWithLabel/VBoxContainer" index="0"]
 text = "Next"
 
 [node name="NextPolyomino" parent="View/NextWithLabel/VBoxContainer/CenterContainer/Control" index="0" instance=ExtResource("1_bg4fb")]
 
+[connection signal="EnteredNewTurn" from="GameScreenStateMachine/GameScreenInputState" to="View/StatHud" method="OnNewTurn"]
 [connection signal="BlocksRemoved" from="View/BlockBoardPosition/BlockBoard" to="View/StatHud" method="OnNewCombo"]
 [connection signal="EnteredPhase" from="View/BlockBoardPosition/BlockBoard" to="View/StatHud" method="OnPhase"]
 

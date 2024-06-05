@@ -9,6 +9,7 @@ public partial class GameScreenStartState : GameScreenState
     override public void OnEnter()
     {
         _inputEvents.ConfirmPressed += GameStarted;
+        BlockBoard?.ClearGridLines();
     }
 
     public void GameStarted()
@@ -21,6 +22,7 @@ public partial class GameScreenStartState : GameScreenState
         BlockBoard.BlockGrid.UpdateBlocksFromTypes(new BlockType?[GameScreen.BoardSize.X, GameScreen.BoardSize.Y]);
         GameScreen.WallKick();
         BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameScreen.LeftIndex);
+        BlockBoard.DrawGridLines();
         EmitSignal(SignalName.Transitioned, "GameScreenInputState");
     }
 

@@ -17,11 +17,6 @@ public partial class GameScreen : Node2D
     public Vector2I BoardSize { get; init; } = new Vector2I(10, 6); // Some top rows are for overflow blocks
     public int OverflowFrom { get; init; } = 3;
 
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-    }
-
     public void AdvancePolyomino()
     {
         CurPolyomino.BlockGrid.UpdateBlocksFromTypes(NextPolyomino.BlockGrid.ToBlockTypes());
