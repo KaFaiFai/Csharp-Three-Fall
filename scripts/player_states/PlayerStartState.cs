@@ -4,7 +4,7 @@ using System;
 public partial class PlayerStartState : PlayerState
 {
     [Export]
-    private InputEvents _inputEvents;
+    private PlayerInput _inputEvents;
 
     [Export]
     private PlayerState _nextInputState;

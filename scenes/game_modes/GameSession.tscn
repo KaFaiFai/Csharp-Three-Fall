@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://dhx47vi00y3el"]
 
 [ext_resource type="Script" path="res://scenes/game_modes/GameSession.cs" id="1_8dl8f"]
-[ext_resource type="PackedScene" uid="uid://bjmrato4y1a8w" path="res://scenes/components/InputEvents.tscn" id="2_a1hox"]
+[ext_resource type="PackedScene" uid="uid://bjmrato4y1a8w" path="res://scenes/components/PlayerInput.tscn" id="2_a1hox"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerStateMachine.cs" id="3_3ufha"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerInputState.cs" id="4_7jlcv"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerPlacingState.cs" id="5_dobk6"]
@@ -22,7 +22,8 @@ custom_minimum_size = Vector2(1152, 648)
 offset_right = 1156.0
 offset_bottom = 728.0
 
-[node name="InputEvents" parent="." instance=ExtResource("2_a1hox")]
+[node name="PlayerInput" parent="." instance=ExtResource("2_a1hox")]
+Players = "1,2"
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("InitialState")]
 script = ExtResource("3_3ufha")
@@ -30,7 +31,7 @@ InitialState = NodePath("PlayerStartState")
 
 [node name="PlayerInputState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_inputEvents", "_nextPlacingState", "GameSession")]
 script = ExtResource("4_7jlcv")
-_inputEvents = NodePath("../../InputEvents")
+_inputEvents = NodePath("../../PlayerInput")
 _nextPlacingState = NodePath("../PlayerPlacingState")
 GameSession = NodePath("../..")
 
@@ -45,7 +46,7 @@ GameSession = NodePath("../..")
 
 [node name="PlayerStartState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_inputEvents", "_nextInputState", "GameSession")]
 script = ExtResource("7_d3pe8")
-_inputEvents = NodePath("../../InputEvents")
+_inputEvents = NodePath("../../PlayerInput")
 _nextInputState = NodePath("../PlayerInputState")
 GameSession = NodePath("../..")
 

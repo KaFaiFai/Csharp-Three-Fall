@@ -7,7 +7,7 @@ public partial class PlayerInputState : PlayerState
     public delegate void EnteredNewTurnEventHandler();
 
     [Export]
-    private InputEvents _inputEvents;
+    private PlayerInput _inputEvents;
     [Export]
     private PlayerState _nextPlacingState;
 
