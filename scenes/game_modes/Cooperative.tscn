@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ckhwuulfvwjse" path="res://scenes/blocks/BlockBoard.tscn" id="8_npbbc"]
 [ext_resource type="PackedScene" uid="uid://dwrsnq6e6cm26" path="res://scenes/hud/StatHud.tscn" id="9_cmrqr"]
 
-[node name="Normal" type="Node2D"]
+[node name="Cooperative" type="Node2D"]
 
 [node name="ColorRect" type="ColorRect" parent="."]
 offset_right = 1152.0
