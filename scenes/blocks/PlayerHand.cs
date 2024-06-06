@@ -1,21 +1,20 @@
 using Godot;
 using System;
-using System.Threading.Tasks;
 
-public partial class GameSession : Node2D
+public partial class PlayerHand : Node2D
 {
-    public RandomNumberGenerator Rng { get; set; }
+    [Export] public ulong Seed { get; private set; }
+    [Export] public Polyomino CurPolyomino { get; private set; }
+    [Export] public Polyomino NextPolyomino { get; private set; }
+
     public int LeftIndex { get; set; }
 
-    [Export]
-    public Polyomino CurPolyomino { get; private set; }
-    [Export]
-    public Polyomino NextPolyomino { get; private set; }
-    [Export]
-    public BlockBoard BlockBoard { get; private set; }
+    private RandomNumberGenerator Rng { get; set; }
 
-    public Vector2I BoardSize { get; init; } = new Vector2I(10, 6); // Some top rows are for overflow blocks
-    public int OverflowFrom { get; init; } = 3;
+    public override void _Ready()
+    {
+        Rng = new RandomNumberGenerator() { Seed = Seed };
+    }
 
     public void AdvancePolyomino()
     {
@@ -38,22 +37,10 @@ public partial class GameSession : Node2D
         NextPolyomino.BlockGrid.UpdateBlocksFromTypes(newBlockTypes);
     }
 
-    public void WallKick()
+    public void WallKick(BlockBoard blockBoard)
     {
-        int baordWidth = BlockBoard.BlockGrid.Blocks.GetLength(1);
+        int baordWidth = blockBoard.BlockGrid.Blocks.GetLength(1);
         int blocksWidth = CurPolyomino.BlockGrid.Blocks.GetLength(1);
         LeftIndex = Mechanics.WallKick(baordWidth, blocksWidth, LeftIndex);
-    }
-
-    public bool HasOverflowBlocks()
-    {
-        for (var i = 0; i <= OverflowFrom; i++)
-        {
-            for (var j = 0; j < BlockBoard.BlockGrid.Blocks.GetLength(1); j++)
-            {
-                if (BlockBoard.BlockGrid.Blocks[i, j] != null) return true;
-            }
-        }
-        return false;
     }
 }

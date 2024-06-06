@@ -3,29 +3,29 @@ using System;
 
 public partial class PlayerStartState : PlayerState
 {
-    [Export]
-    private PlayerInput _inputEvents;
+    [Export] private PlayerState _nextInputState;
 
-    [Export]
-    private PlayerState _nextInputState;
+    [Export] private PlayerInput _inputEvents;
+    [Export] private BlockBoard _blockBoard;
+    [Export] private PlayerHand _playerHand;
 
     override public void OnEnter()
     {
         _inputEvents.ConfirmPressed += GameStarted;
-        BlockBoard?.ClearGridLines();
+        _blockBoard?.ClearGridLines();
     }
 
     public void GameStarted()
     {
-        GameSession.Rng = new RandomNumberGenerator() { Seed = 0 };
-        GameSession.LeftIndex = 0;
+        _playerHand.LeftIndex = 0;
+        _playerHand.AdvancePolyomino();
+        _playerHand.AdvancePolyomino();
 
-        GameSession.AdvancePolyomino();
-        GameSession.AdvancePolyomino();
-        BlockBoard.BlockGrid.UpdateBlocksFromTypes(new BlockType?[GameSession.BoardSize.X, GameSession.BoardSize.Y]);
-        GameSession.WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
-        BlockBoard.DrawGridLines(GameSession.OverflowFrom + 1);
+        BlockType?[,] newEmptyBoard = new BlockType?[_blockBoard.InitialBoardSize.X, _blockBoard.InitialBoardSize.Y];
+        _blockBoard.BlockGrid.UpdateBlocksFromTypes(newEmptyBoard);
+        _playerHand.WallKick(_blockBoard);
+        _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
+        _blockBoard.DrawGridLines();
         EmitSignal(SignalName.Transitioned, _nextInputState);
     }
 
@@ -33,6 +33,4 @@ public partial class PlayerStartState : PlayerState
     {
         _inputEvents.ConfirmPressed -= GameStarted;
     }
-
-
 }

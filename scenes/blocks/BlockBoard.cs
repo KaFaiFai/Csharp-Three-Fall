@@ -6,22 +6,20 @@ using System.Threading.Tasks;
 
 public partial class BlockBoard : Node2D
 {
-    [Signal]
-    public delegate void EnteredPhaseEventHandler(int phase);
-    [Signal]
-    public delegate void BlocksRemovedEventHandler(int numRemoved, BlockType blockType);
+    [Signal] public delegate void EnteredPhaseEventHandler(int phase);
+    [Signal] public delegate void BlocksRemovedEventHandler(int numRemoved, BlockType blockType);
 
-    [Export]
-    public PackedScene BlockScene;
-    [Export]
-    public PackedScene ExplosionEffect;
-    [Export]
-    public AudioStreamPlayer ComboSfxPlayer;
+    [Export] public PackedScene BlockScene;
+    [Export] public PackedScene ExplosionEffect;
+    [Export] public AudioStreamPlayer ComboSfxPlayer;
 
     public BlockGrid BlockGrid { get; set; }
     public List<Block> PreviewBlocks { get; set; } = new List<Block>();
     public List<Line2D> GridLines { get; set; } = new List<Line2D> { };
 
+    // Some top rows are for overflow blocks
+    [Export] public Vector2I InitialBoardSize { get; set; } = new Vector2I(10, 6);
+    public int OverflowFrom { get; init; } = 3;
     public float BlockDropSpeed { get; set; } = 1000;
 
     public override void _Ready()
@@ -38,10 +36,7 @@ public partial class BlockBoard : Node2D
         GridLines = new List<Line2D>();
     }
 
-    /// <summary>
-    /// Only start drawing grid lines from <paramref name="topRow"/>
-    /// </summary>
-    public void DrawGridLines(int topRow)
+    public void DrawGridLines()
     {
         if (BlockGrid == null || BlockGrid.Blocks == null) throw new ArgumentException();
 
@@ -64,8 +59,8 @@ public partial class BlockBoard : Node2D
         }
         foreach (int j in new List<int> { 0, numCol })
         {
-            Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(topRow - 1, j - 1))
-                + BlockGrid.GetCellPositionAt(new Vector2I(topRow, j))) / 2;
+            Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(OverflowFrom, j - 1))
+                + BlockGrid.GetCellPositionAt(new Vector2I(OverflowFrom + 1, j))) / 2;
             Vector2 to = (BlockGrid.GetCellPositionAt(new Vector2I(numRow - 1, j - 1))
                 + BlockGrid.GetCellPositionAt(new Vector2I(numRow, j))) / 2;
             Line2D newLine = new Line2D()
@@ -105,6 +100,18 @@ public partial class BlockBoard : Node2D
         }
     }
 
+    public bool HasOverflowBlocks()
+    {
+        for (var i = 0; i <= OverflowFrom; i++)
+        {
+            for (var j = 0; j < BlockGrid.Blocks.GetLength(1); j++)
+            {
+                if (BlockGrid.Blocks[i, j] != null) return true;
+            }
+        }
+        return false;
+    }
+
     public async Task ResolveBoardForNewPolyomino(Polyomino polyomino, int leftIndex)
     {
         int phase = 1;
@@ -122,8 +129,6 @@ public partial class BlockBoard : Node2D
             await ToSignal(GetTree().CreateTimer(0.1), Timer.SignalName.Timeout);
             phase++;
         }
-        //SceneTreeTimer timer = GetTree().CreateTimer(0.1);
-        //await ToSignal(timer, SceneTreeTimer.SignalName.Timeout);
     }
 
     private async Task PlaceNewPolyomino(Polyomino polyomino, int leftIndex)

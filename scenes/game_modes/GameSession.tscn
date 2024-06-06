@@ -1,26 +1,20 @@
-[gd_scene load_steps=11 format=3 uid="uid://dhx47vi00y3el"]
+[gd_scene load_steps=10 format=3 uid="uid://dhx47vi00y3el"]
 
-[ext_resource type="Script" path="res://scenes/game_modes/GameSession.cs" id="1_8dl8f"]
 [ext_resource type="PackedScene" uid="uid://bjmrato4y1a8w" path="res://scenes/components/PlayerInput.tscn" id="2_a1hox"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerStateMachine.cs" id="3_3ufha"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerInputState.cs" id="4_7jlcv"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerPlacingState.cs" id="5_dobk6"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerGameOverState.cs" id="6_0tcjc"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerStartState.cs" id="7_d3pe8"]
-[ext_resource type="PackedScene" uid="uid://b12i7atr4i8gu" path="res://scenes/blocks/Polyomino.tscn" id="8_giipe"]
+[ext_resource type="PackedScene" uid="uid://crowysdyevqkm" path="res://scenes/blocks/PlayerHand.tscn" id="7_tsiwr"]
 [ext_resource type="PackedScene" uid="uid://ckhwuulfvwjse" path="res://scenes/blocks/BlockBoard.tscn" id="9_0x3v3"]
 [ext_resource type="PackedScene" uid="uid://dwrsnq6e6cm26" path="res://scenes/hud/StatHud.tscn" id="10_g3b4s"]
 
-[node name="GameSession" type="Node2D" node_paths=PackedStringArray("CurPolyomino", "NextPolyomino", "BlockBoard")]
-script = ExtResource("1_8dl8f")
-CurPolyomino = NodePath("CurPolyomino")
-NextPolyomino = NodePath("NextPolyomino")
-BlockBoard = NodePath("BlockBoard")
+[node name="GameSession" type="Node2D"]
 
 [node name="ColorRect" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(1152, 648)
-offset_right = 1156.0
-offset_bottom = 728.0
+offset_right = 1152.0
+offset_bottom = 648.0
 
 [node name="PlayerInput" parent="." instance=ExtResource("2_a1hox")]
 Players = "1,2"
@@ -29,33 +23,32 @@ Players = "1,2"
 script = ExtResource("3_3ufha")
 InitialState = NodePath("PlayerStartState")
 
-[node name="PlayerInputState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_inputEvents", "_nextPlacingState", "GameSession")]
+[node name="PlayerInputState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextPlacingState", "_inputEvents", "_blockBoard", "_playerHand")]
 script = ExtResource("4_7jlcv")
-_inputEvents = NodePath("../../PlayerInput")
 _nextPlacingState = NodePath("../PlayerPlacingState")
-GameSession = NodePath("../..")
+_inputEvents = NodePath("../../PlayerInput")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../PlayerHand")
 
-[node name="PlayerPlacingState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextInputState", "GameSession")]
+[node name="PlayerPlacingState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextInputState", "_nextGameOverState", "_blockBoard", "_playerHand")]
 script = ExtResource("5_dobk6")
 _nextInputState = NodePath("../PlayerInputState")
-GameSession = NodePath("../..")
+_nextGameOverState = NodePath("../PlayerGameOverState")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../PlayerHand")
 
-[node name="PlayerGameOverState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("GameSession")]
+[node name="PlayerGameOverState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("6_0tcjc")
-GameSession = NodePath("../..")
 
-[node name="PlayerStartState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_inputEvents", "_nextInputState", "GameSession")]
+[node name="PlayerStartState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextInputState", "_inputEvents", "_blockBoard", "_playerHand")]
 script = ExtResource("7_d3pe8")
-_inputEvents = NodePath("../../PlayerInput")
 _nextInputState = NodePath("../PlayerInputState")
-GameSession = NodePath("../..")
+_inputEvents = NodePath("../../PlayerInput")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../PlayerHand")
 
-[node name="CurPolyomino" parent="." instance=ExtResource("8_giipe")]
-position = Vector2(945, 225)
-
-[node name="NextPolyomino" parent="." instance=ExtResource("8_giipe")]
-position = Vector2(945, 489)
-scale = Vector2(0.7, 0.7)
+[node name="PlayerHand" parent="." instance=ExtResource("7_tsiwr")]
+position = Vector2(943, 327)
 
 [node name="BlockBoard" parent="." instance=ExtResource("9_0x3v3")]
 position = Vector2(576, 324)
@@ -66,7 +59,7 @@ offset_top = 76.0
 offset_right = 103.0
 offset_bottom = 76.0
 
-[node name="Label" type="Label" parent="."]
+[node name="GameModeLabel" type="Label" parent="."]
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5

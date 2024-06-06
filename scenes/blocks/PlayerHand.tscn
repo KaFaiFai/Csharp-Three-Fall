@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://crowysdyevqkm"]
+
+[ext_resource type="Script" path="res://scenes/blocks/PlayerHand.cs" id="1_8stkd"]
+[ext_resource type="PackedScene" uid="uid://b12i7atr4i8gu" path="res://scenes/blocks/Polyomino.tscn" id="1_pp2pb"]
+
+[node name="PlayerHand" type="Node2D" node_paths=PackedStringArray("CurPolyomino", "NextPolyomino")]
+script = ExtResource("1_8stkd")
+CurPolyomino = NodePath("CurPolyomino")
+NextPolyomino = NodePath("NextPolyomino")
+
+[node name="CurPolyomino" parent="." instance=ExtResource("1_pp2pb")]
+position = Vector2(0, -116)
+
+[node name="NextPolyomino" parent="." instance=ExtResource("1_pp2pb")]
+position = Vector2(0, 88)

@@ -3,13 +3,13 @@ using System;
 
 public partial class PlayerInputState : PlayerState
 {
-    [Signal]
-    public delegate void EnteredNewTurnEventHandler();
+    [Signal] public delegate void EnteredNewTurnEventHandler();
 
-    [Export]
-    private PlayerInput _inputEvents;
-    [Export]
-    private PlayerState _nextPlacingState;
+    [Export] private PlayerState _nextPlacingState;
+
+    [Export] private PlayerInput _inputEvents;
+    [Export] private BlockBoard _blockBoard;
+    [Export] private PlayerHand _playerHand;
 
     public override void OnEnter()
     {
@@ -23,7 +23,7 @@ public partial class PlayerInputState : PlayerState
 
     public override void OnExit()
     {
-        CurPolyomino.Tween?.Kill();
+        _playerHand.CurPolyomino.Tween?.Kill();
         _inputEvents.LeftPressed -= MoveLeft;
         _inputEvents.RightPressed -= MoveRight;
         _inputEvents.ClockwisePressed -= RotateClockwise;
@@ -33,31 +33,31 @@ public partial class PlayerInputState : PlayerState
 
     public void MoveLeft()
     {
-        GameSession.LeftIndex--;
-        GameSession.WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
+        _playerHand.LeftIndex--;
+        _playerHand.WallKick(_blockBoard);
+        _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
     }
 
     public void MoveRight()
     {
-        GameSession.LeftIndex++;
-        GameSession.WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
+        _playerHand.LeftIndex++;
+        _playerHand.WallKick(_blockBoard);
+        _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
     }
 
     public async void RotateClockwise()
     {
-        var task = CurPolyomino.Rotate(clockwise: true);
-        GameSession.WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
+        var task = _playerHand.CurPolyomino.Rotate(clockwise: true);
+        _playerHand.WallKick(_blockBoard);
+        _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
         await task;
     }
 
     public async void RotateAnticlockwise()
     {
-        var task = CurPolyomino.Rotate(clockwise: false);
-        GameSession.WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
+        var task = _playerHand.CurPolyomino.Rotate(clockwise: false);
+        _playerHand.WallKick(_blockBoard);
+        _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
         await task;
     }
 
