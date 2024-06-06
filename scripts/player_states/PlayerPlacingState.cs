@@ -3,6 +3,10 @@ using System;
 
 public partial class PlayerPlacingState : PlayerState
 {
+    [Export]
+    private PlayerState _nextInputState;
+    private PlayerState _nextGameOverState;
+
     override public async void OnEnter()
     {
         BlockBoard.ClearPreview();
@@ -16,11 +20,11 @@ public partial class PlayerPlacingState : PlayerState
             GameSession.AdvancePolyomino();
             GameSession.WallKick();
             BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
-            EmitSignal(SignalName.Transitioned, "PlayerInputState");
+            EmitSignal(SignalName.Transitioned, _nextInputState);
         }
         else
         {
-            EmitSignal(SignalName.Transitioned, "PlayerGameOverState");
+            EmitSignal(SignalName.Transitioned, _nextGameOverState);
         }
     }
 

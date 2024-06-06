@@ -4,7 +4,7 @@ using System;
 abstract public partial class PlayerState : Node
 {
     [Signal]
-    public delegate void TransitionedEventHandler(String newStateName);
+    public delegate void TransitionedEventHandler(PlayerState newState);
 
     [Export]
     protected GameSession GameSession { get; private set; }

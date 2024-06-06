@@ -6,6 +6,9 @@ public partial class PlayerStartState : PlayerState
     [Export]
     private InputEvents _inputEvents;
 
+    [Export]
+    private PlayerState _nextInputState;
+
     override public void OnEnter()
     {
         _inputEvents.ConfirmPressed += GameStarted;
@@ -23,7 +26,7 @@ public partial class PlayerStartState : PlayerState
         GameSession.WallKick();
         BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
         BlockBoard.DrawGridLines(GameSession.OverflowFrom + 1);
-        EmitSignal(SignalName.Transitioned, "PlayerInputState");
+        EmitSignal(SignalName.Transitioned, _nextInputState);
     }
 
     override public void OnExit()

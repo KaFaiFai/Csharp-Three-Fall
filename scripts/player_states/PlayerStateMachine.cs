@@ -26,14 +26,11 @@ public partial class PlayerStateMachine : Node
         CurrentState = InitialState;
     }
 
-    private void OnStateTransitioned(String newStateName)
+    private void OnStateTransitioned(PlayerState newState)
     {
-        if (!States.ContainsKey(newStateName)) throw new ArgumentException($"Invalid state name {newStateName}");
-
-        PlayerState newState = States[newStateName];
         CurrentState.OnExit();
         newState.OnEnter();
         CurrentState = newState;
-        GD.Print($"Entered new state {newStateName}");
+        GD.Print($"Entered new state {newState.Name}");
     }
 }

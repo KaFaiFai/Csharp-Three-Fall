@@ -8,6 +8,8 @@ public partial class PlayerInputState : PlayerState
 
     [Export]
     private InputEvents _inputEvents;
+    [Export]
+    private PlayerState _nextPlacingState;
 
     public override void OnEnter()
     {
@@ -59,9 +61,8 @@ public partial class PlayerInputState : PlayerState
         await task;
     }
 
-
     public void PlaceCurrentPolyomino()
     {
-        EmitSignal(SignalName.Transitioned, "PlayerPlacingState");
+        EmitSignal(SignalName.Transitioned, _nextPlacingState);
     }
 }
