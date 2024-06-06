@@ -2,21 +2,21 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class GameScreenStateMachine : Node
+public partial class PlayerStateMachine : Node
 {
     [Export]
-    public GameScreenState InitialState { get; set; }
+    public PlayerState InitialState { get; set; }
 
-    public GameScreenState CurrentState { get; private set; }
-    public Dictionary<String, GameScreenState> States { get; private set; } = new();
+    public PlayerState CurrentState { get; private set; }
+    public Dictionary<String, PlayerState> States { get; private set; } = new();
 
     public override void _Ready()
     {
         foreach (var child in GetChildren())
         {
-            if (child is GameScreenState)
+            if (child is PlayerState)
             {
-                GameScreenState state = (GameScreenState)child;
+                PlayerState state = (PlayerState)child;
                 States[child.Name] = state;
                 state.Transitioned += OnStateTransitioned;
             }
@@ -30,7 +30,7 @@ public partial class GameScreenStateMachine : Node
     {
         if (!States.ContainsKey(newStateName)) throw new ArgumentException($"Invalid state name {newStateName}");
 
-        GameScreenState newState = States[newStateName];
+        PlayerState newState = States[newStateName];
         CurrentState.OnExit();
         newState.OnEnter();
         CurrentState = newState;

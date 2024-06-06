@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class GameScreenInputState : GameScreenState
+public partial class PlayerInputState : PlayerState
 {
     [Signal]
     public delegate void EnteredNewTurnEventHandler();
@@ -31,37 +31,37 @@ public partial class GameScreenInputState : GameScreenState
 
     public void MoveLeft()
     {
-        GameScreen.LeftIndex--;
-        GameScreen.WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameScreen.LeftIndex);
+        GameSession.LeftIndex--;
+        GameSession.WallKick();
+        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
     }
 
     public void MoveRight()
     {
-        GameScreen.LeftIndex++;
-        GameScreen.WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameScreen.LeftIndex);
+        GameSession.LeftIndex++;
+        GameSession.WallKick();
+        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
     }
 
     public async void RotateClockwise()
     {
         var task = CurPolyomino.Rotate(clockwise: true);
-        GameScreen.WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameScreen.LeftIndex);
+        GameSession.WallKick();
+        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
         await task;
     }
 
     public async void RotateAnticlockwise()
     {
         var task = CurPolyomino.Rotate(clockwise: false);
-        GameScreen.WallKick();
-        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameScreen.LeftIndex);
+        GameSession.WallKick();
+        BlockBoard.UpdatePreviewPolyomino(CurPolyomino, GameSession.LeftIndex);
         await task;
     }
 
 
     public void PlaceCurrentPolyomino()
     {
-        EmitSignal(SignalName.Transitioned, "GameScreenPlacingState");
+        EmitSignal(SignalName.Transitioned, "PlayerPlacingState");
     }
 }

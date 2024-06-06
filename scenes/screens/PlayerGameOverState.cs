@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class GameScreenGameOverState : GameScreenState
+public partial class PlayerGameOverState : PlayerState
 {
     override public void OnEnter()
     {

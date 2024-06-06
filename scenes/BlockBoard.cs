@@ -47,7 +47,7 @@ public partial class BlockBoard : Node2D
 
         int numRow = BlockGrid.Blocks.GetLength(0);
         int numCol = BlockGrid.Blocks.GetLength(1);
-        foreach (int i in new List<int> { topRow, numRow })
+        foreach (int i in new List<int> { numRow })
         {
             Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(i - 1, -1))
                 + BlockGrid.GetCellPositionAt(new Vector2I(i, 0))) / 2;

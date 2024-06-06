@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Threading.Tasks;
 
-public partial class GameScreen : Node2D
+public partial class GameSession : Node2D
 {
     public RandomNumberGenerator Rng { get; set; }
     public int LeftIndex { get; set; }

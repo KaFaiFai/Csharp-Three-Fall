@@ -11,23 +11,12 @@ public partial class StatHud : Control
 
     private List<(int turn, int phase, int numRemoved, BlockType)> BlockTypeCombos { get; set; } = new();
 
+    [Export]
     private Label ScoreLabel { get; set; }
-    private Label TurnLabel { get; set; }
-    private Label MaxComboLabel { get; set; }
-    private Label BlocksRemovedLabel { get; set; }
-    private Label PhaseLabel { get; set; }
-    private Label ComboLabel { get; set; }
 
     // Called when the node enters the scene tree for the first time.
     public override void _Ready()
     {
-        ScoreLabel = GetNode<Label>("VBoxContainer/ScoreLabel");
-        TurnLabel = GetNode<Label>("VBoxContainer/TurnLabel");
-        MaxComboLabel = GetNode<Label>("VBoxContainer/MaxComboLabel");
-        BlocksRemovedLabel = GetNode<Label>("VBoxContainer/BlocksRemovedLabel");
-        PhaseLabel = GetNode<Label>("VBoxContainer/PhaseLabel");
-        ComboLabel = GetNode<Label>("VBoxContainer/ComboLabel");
-
         UpdateLabel();
     }
 
@@ -73,10 +62,5 @@ public partial class StatHud : Control
     private void UpdateLabel()
     {
         ScoreLabel.Text = $"Score: {CalculateScore()}";
-        TurnLabel.Text = $"Turn: {Turn}";
-        MaxComboLabel.Text = $"Max combo: {FindMaxComboInTurn()}";
-        BlocksRemovedLabel.Text = $"Blocks removed: {CountNumBlocksRemoved()}";
-        PhaseLabel.Text = Phase == 0 ? "" : $"Phase: {Phase}";
-        ComboLabel.Text = Combo == 0 ? "" : $"Combo: {Combo}";
     }
 }
