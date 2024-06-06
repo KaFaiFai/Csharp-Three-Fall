@@ -53,7 +53,12 @@ public partial class BlockBoard : Node2D
                 + BlockGrid.GetCellPositionAt(new Vector2I(i, 0))) / 2;
             Vector2 to = (BlockGrid.GetCellPositionAt(new Vector2I(i - 1, numCol - 1))
                 + BlockGrid.GetCellPositionAt(new Vector2I(i, numCol))) / 2;
-            Line2D newLine = new Line2D() { Width = 3, Points = new Vector2[] { from, to } };
+            Line2D newLine = new Line2D()
+            {
+                Width = 3,
+                DefaultColor = Colors.Black,
+                Points = new Vector2[] { from, to }
+            };
             AddChild(newLine);
             GridLines.Add(newLine);
         }
@@ -63,7 +68,12 @@ public partial class BlockBoard : Node2D
                 + BlockGrid.GetCellPositionAt(new Vector2I(topRow, j))) / 2;
             Vector2 to = (BlockGrid.GetCellPositionAt(new Vector2I(numRow - 1, j - 1))
                 + BlockGrid.GetCellPositionAt(new Vector2I(numRow, j))) / 2;
-            Line2D newLine = new Line2D() { Width = 3, Points = new Vector2[] { from, to } };
+            Line2D newLine = new Line2D()
+            {
+                Width = 3,
+                DefaultColor = Colors.Black,
+                Points = new Vector2[] { from, to }
+            };
             AddChild(newLine);
             GridLines.Add(newLine);
         }

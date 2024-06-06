@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b12i7atr4i8gu"]
 
-[ext_resource type="Script" path="res://scenes/Polyomino.cs" id="1_o1led"]
+[ext_resource type="Script" path="res://scenes/blocks/Polyomino.cs" id="1_o1led"]
 [ext_resource type="PackedScene" uid="uid://blrgac5gfmush" path="res://scenes/components/BlockGrid.tscn" id="3_orxln"]
 
 [node name="Polyomino" type="Node2D"]

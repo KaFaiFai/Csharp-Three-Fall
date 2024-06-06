@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://dwrsnq6e6cm26"]
 
-[ext_resource type="Script" path="res://scenes/widgets/StatHud.cs" id="1_tep08"]
+[ext_resource type="Script" path="res://scenes/hud/StatHud.cs" id="1_tep08"]
 
 [node name="StatHud" type="Control" node_paths=PackedStringArray("ScoreLabel")]
 layout_mode = 3
@@ -12,5 +12,6 @@ ScoreLabel = NodePath("ScoreLabel")
 layout_mode = 0
 offset_right = 147.0
 offset_bottom = 42.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "Score: 123"
