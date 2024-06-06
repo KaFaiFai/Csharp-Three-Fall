@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://w0fh64x03hfx"]
+
+[ext_resource type="PackedScene" uid="uid://bm125c5yo72sk" path="res://scenes/game_modes/Base.tscn" id="1_lpgb2"]
+[ext_resource type="PackedScene" uid="uid://bjmrato4y1a8w" path="res://scenes/components/PlayerInput.tscn" id="2_leafm"]
+[ext_resource type="Script" path="res://scripts/player_states/PlayerInputState.cs" id="3_gy0lu"]
+[ext_resource type="Script" path="res://scripts/player_states/PlayerPlacingState.cs" id="4_bxy8e"]
+[ext_resource type="PackedScene" uid="uid://crowysdyevqkm" path="res://scenes/blocks/PlayerHand.tscn" id="5_la5xr"]
+
+[node name="NormalGame" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Label" type="Label" parent="."]
+offset_left = 472.0
+offset_top = 87.0
+offset_right = 646.0
+offset_bottom = 129.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Cooperative"
+
+[node name="BaseGame" parent="." instance=ExtResource("1_lpgb2")]
+
+[node name="PlayerInput" parent="BaseGame" index="0"]
+Players = "1"
+
+[node name="Player2Input" parent="BaseGame" instance=ExtResource("2_leafm")]
+Players = "2"
+
+[node name="PlayerPlacingState" parent="BaseGame/PlayerStateMachine" index="2" node_paths=PackedStringArray("_nextInputState")]
+_nextInputState = NodePath("../Player2InputState")
+
+[node name="Player2InputState" type="Node" parent="BaseGame/PlayerStateMachine" index="3" node_paths=PackedStringArray("_nextPlacingState", "_inputEvents", "_blockBoard", "_playerHand")]
+script = ExtResource("3_gy0lu")
+_nextPlacingState = NodePath("../Player2PlacingState")
+_inputEvents = NodePath("../../Player2Input")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../Player2Hand")
+
+[node name="Player2PlacingState" type="Node" parent="BaseGame/PlayerStateMachine" index="4" node_paths=PackedStringArray("_nextInputState", "_nextGameOverState", "_blockBoard", "_playerHand")]
+script = ExtResource("4_bxy8e")
+_nextInputState = NodePath("../PlayerInputState")
+_nextGameOverState = NodePath("../PlayerGameOverState")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../Player2Hand")
+
+[node name="PlayerHand" parent="BaseGame" index="3"]
+position = Vector2(246, 331)
+
+[node name="Player2Hand" parent="BaseGame" instance=ExtResource("5_la5xr")]
+position = Vector2(926, 338)
+Seed = 1
+
+[editable path="BaseGame"]

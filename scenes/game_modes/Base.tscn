@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3 uid="uid://bm125c5yo72sk"]
+
+[ext_resource type="PackedScene" uid="uid://bjmrato4y1a8w" path="res://scenes/components/PlayerInput.tscn" id="1_nh5xp"]
+[ext_resource type="Script" path="res://scripts/player_states/PlayerStateMachine.cs" id="2_rm0ro"]
+[ext_resource type="Script" path="res://scripts/player_states/PlayerStartState.cs" id="3_xs7yl"]
+[ext_resource type="Script" path="res://scripts/player_states/PlayerInputState.cs" id="4_hl5gn"]
+[ext_resource type="Script" path="res://scripts/player_states/PlayerPlacingState.cs" id="5_x7wrg"]
+[ext_resource type="Script" path="res://scripts/player_states/PlayerGameOverState.cs" id="6_s1o4i"]
+[ext_resource type="PackedScene" uid="uid://crowysdyevqkm" path="res://scenes/blocks/PlayerHand.tscn" id="7_tucaq"]
+[ext_resource type="PackedScene" uid="uid://ckhwuulfvwjse" path="res://scenes/blocks/BlockBoard.tscn" id="8_fio3p"]
+[ext_resource type="PackedScene" uid="uid://dwrsnq6e6cm26" path="res://scenes/hud/StatHud.tscn" id="9_c6ygv"]
+
+[node name="Base" type="Node2D"]
+
+[node name="PlayerInput" parent="." instance=ExtResource("1_nh5xp")]
+Players = "1,2"
+
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("InitialState")]
+script = ExtResource("2_rm0ro")
+InitialState = NodePath("PlayerStartState")
+
+[node name="PlayerStartState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextInputState", "_inputEvents", "_blockBoard", "_playerHand")]
+script = ExtResource("3_xs7yl")
+_nextInputState = NodePath("../PlayerInputState")
+_inputEvents = NodePath("../../PlayerInput")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../PlayerHand")
+
+[node name="PlayerInputState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextPlacingState", "_inputEvents", "_blockBoard", "_playerHand")]
+script = ExtResource("4_hl5gn")
+_nextPlacingState = NodePath("../PlayerPlacingState")
+_inputEvents = NodePath("../../PlayerInput")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../PlayerHand")
+
+[node name="PlayerPlacingState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextInputState", "_nextGameOverState", "_blockBoard", "_playerHand")]
+script = ExtResource("5_x7wrg")
+_nextInputState = NodePath("../PlayerInputState")
+_nextGameOverState = NodePath("../PlayerGameOverState")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../PlayerHand")
+
+[node name="PlayerGameOverState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("6_s1o4i")
+
+[node name="PlayerHand" parent="." instance=ExtResource("7_tucaq")]
+position = Vector2(943, 327)
+
+[node name="BlockBoard" parent="." instance=ExtResource("8_fio3p")]
+position = Vector2(576, 324)
+
+[node name="StatHud" parent="." instance=ExtResource("9_c6ygv")]
+offset_left = 103.0
+offset_top = 76.0
+offset_right = 103.0
+offset_bottom = 76.0
+
+[connection signal="BlocksRemoved" from="BlockBoard" to="StatHud" method="OnNewCombo"]
+[connection signal="EnteredNewTurn" from="BlockBoard" to="StatHud" method="OnNewTurn"]
+[connection signal="EnteredPhase" from="BlockBoard" to="StatHud" method="OnPhase"]

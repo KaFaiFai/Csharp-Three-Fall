@@ -23,9 +23,13 @@ public partial class Polyomino : Node2D
     {
         List<(Vector2I, Vector2I)> gridRotations = BlockGrid.RotateCells(clockwise: clockwise);
         Vector2I rotatedRowCol = new Vector2I(BlockGrid.Blocks.GetLength(1), BlockGrid.Blocks.GetLength(0));
-
         Block[,] newBlocks = new Block[rotatedRowCol.X, rotatedRowCol.Y];
+
+        // finish previous tween immediately
+        Tween?.Pause();
+        Tween?.CustomStep(9999);
         Tween?.Kill();
+
         Tween = CreateTween().SetParallel();
         foreach (var (from, to) in gridRotations)
         {
