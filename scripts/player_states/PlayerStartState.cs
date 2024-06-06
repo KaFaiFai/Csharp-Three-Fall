@@ -17,15 +17,8 @@ public partial class PlayerStartState : PlayerState
 
     public void GameStarted()
     {
-        _playerHand.LeftIndex = 0;
-        _playerHand.AdvancePolyomino();
-        _playerHand.AdvancePolyomino();
-
-        BlockType?[,] newEmptyBoard = new BlockType?[_blockBoard.InitialBoardSize.X, _blockBoard.InitialBoardSize.Y];
-        _blockBoard.BlockGrid.UpdateBlocksFromTypes(newEmptyBoard);
         _playerHand.WallKick(_blockBoard);
         _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
-        _blockBoard.DrawGridLines();
         EmitSignal(SignalName.Transitioned, _nextInputState);
     }
 

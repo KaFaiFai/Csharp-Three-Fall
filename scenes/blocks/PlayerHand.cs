@@ -14,6 +14,9 @@ public partial class PlayerHand : Node2D
     public override void _Ready()
     {
         Rng = new RandomNumberGenerator() { Seed = Seed };
+        AdvancePolyomino();
+        AdvancePolyomino();
+        LeftIndex = 0;
     }
 
     public void AdvancePolyomino()

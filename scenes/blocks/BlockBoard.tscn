@@ -6,11 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://blrgac5gfmush" path="res://scenes/components/BlockGrid.tscn" id="3_eqlts"]
 [ext_resource type="AudioStream" uid="uid://dfgpojcomd5cx" path="res://assets/audio/completetask_0.mp3" id="5_w7ekh"]
 
-[node name="BlockBoard" type="Node2D" node_paths=PackedStringArray("ComboSfxPlayer")]
+[node name="BlockBoard" type="Node2D" node_paths=PackedStringArray("ComboSfxPlayer", "BlockGrid")]
 script = ExtResource("1_8iwdt")
 BlockScene = ExtResource("2_3v365")
 ExplosionEffect = ExtResource("3_7vonp")
 ComboSfxPlayer = NodePath("ComboSfxPlayer")
+BlockGrid = NodePath("BlockGrid")
 
 [node name="BlockGrid" parent="." instance=ExtResource("3_eqlts")]
 

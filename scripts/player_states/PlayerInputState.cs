@@ -3,8 +3,6 @@ using System;
 
 public partial class PlayerInputState : PlayerState
 {
-    [Signal] public delegate void EnteredNewTurnEventHandler();
-
     [Export] private PlayerState _nextPlacingState;
 
     [Export] private PlayerInput _inputEvents;
@@ -13,7 +11,6 @@ public partial class PlayerInputState : PlayerState
 
     public override void OnEnter()
     {
-        EmitSignal(SignalName.EnteredNewTurn);
         _inputEvents.LeftPressed += MoveLeft;
         _inputEvents.RightPressed += MoveRight;
         _inputEvents.ClockwisePressed += RotateClockwise;

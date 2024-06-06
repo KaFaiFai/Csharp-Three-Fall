@@ -6,14 +6,15 @@ using System.Threading.Tasks;
 
 public partial class BlockBoard : Node2D
 {
+    [Signal] public delegate void EnteredNewTurnEventHandler();
     [Signal] public delegate void EnteredPhaseEventHandler(int phase);
     [Signal] public delegate void BlocksRemovedEventHandler(int numRemoved, BlockType blockType);
 
     [Export] public PackedScene BlockScene;
     [Export] public PackedScene ExplosionEffect;
     [Export] public AudioStreamPlayer ComboSfxPlayer;
+    [Export] public BlockGrid BlockGrid { get; set; }
 
-    public BlockGrid BlockGrid { get; set; }
     public List<Block> PreviewBlocks { get; set; } = new List<Block>();
     public List<Line2D> GridLines { get; set; } = new List<Line2D> { };
 
@@ -24,7 +25,9 @@ public partial class BlockBoard : Node2D
 
     public override void _Ready()
     {
-        BlockGrid = GetNode<BlockGrid>("BlockGrid");
+        BlockType?[,] newEmptyBoard = new BlockType?[InitialBoardSize.X, InitialBoardSize.Y];
+        BlockGrid.UpdateBlocksFromTypes(newEmptyBoard);
+        DrawGridLines();
     }
 
     public void ClearGridLines()
@@ -114,6 +117,7 @@ public partial class BlockBoard : Node2D
 
     public async Task ResolveBoardForNewPolyomino(Polyomino polyomino, int leftIndex)
     {
+        EmitSignal(SignalName.EnteredNewTurn);
         int phase = 1;
         bool toContinue = true;
         while (toContinue)
