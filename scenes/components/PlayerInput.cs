@@ -12,7 +12,7 @@ public partial class PlayerInput : Node
     [Signal] public delegate void AnticlockwisePressedEventHandler();
     [Signal] public delegate void ConfirmPressedEventHandler();
 
-    // Expect "1", "2", "1,2", etc 
+    // Expect "1", "2", "1,2", etc
     [Export] public String Players;
 
     private List<int> _playerIndices;
@@ -20,6 +20,7 @@ public partial class PlayerInput : Node
     public override void _Ready()
     {
         _playerIndices = Players.Split(',').Select(c => c.ToInt()).ToList();
+        GetNode<InputTooltips>("InputTooltips").SetLabels(_playerIndices);
     }
 
     public override void _Process(double delta)

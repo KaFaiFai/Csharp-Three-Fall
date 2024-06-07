@@ -1,6 +1,91 @@
-[gd_scene load_steps=2 format=3 uid="uid://bjmrato4y1a8w"]
+[gd_scene load_steps=3 format=3 uid="uid://bjmrato4y1a8w"]
 
 [ext_resource type="Script" path="res://scenes/components/PlayerInput.cs" id="1_8v275"]
+[ext_resource type="Script" path="res://scenes/components/InputTooltips.cs" id="2_13ycq"]
 
-[node name="PlayerInput" type="Node"]
+[node name="PlayerInput" type="Node2D"]
 script = ExtResource("1_8v275")
+Players = "1"
+
+[node name="InputTooltips" type="VBoxContainer" parent="." node_paths=PackedStringArray("Left", "Right", "Clockwise", "Anticlockwise", "ConfirmButton")]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("2_13ycq")
+Left = NodePath("HBoxContainer/Left")
+Right = NodePath("HBoxContainer/Right")
+Clockwise = NodePath("HBoxContainer2/Clockwise")
+Anticlockwise = NodePath("HBoxContainer2/Anticlockwise")
+ConfirmButton = NodePath("HBoxContainer3/ConfirmButton")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="InputTooltips"]
+layout_mode = 2
+
+[node name="Move" type="Label" parent="InputTooltips/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Move"
+
+[node name="Left" type="Label" parent="InputTooltips/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Left"
+
+[node name="Right" type="Label" parent="InputTooltips/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Right"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="InputTooltips"]
+layout_mode = 2
+
+[node name="Rotate" type="Label" parent="InputTooltips/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Rotate"
+
+[node name="Clockwise" type="Label" parent="InputTooltips/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "↻"
+
+[node name="Anticlockwise" type="Label" parent="InputTooltips/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "↺"
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="InputTooltips"]
+layout_mode = 2
+
+[node name="Comfirm" type="Label" parent="InputTooltips/HBoxContainer3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Confirm"
+
+[node name="ConfirmButton" type="Label" parent="InputTooltips/HBoxContainer3"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
+theme_override_constants/outline_size = 5
+theme_override_font_sizes/font_size = 30
+text = "Spacebar"

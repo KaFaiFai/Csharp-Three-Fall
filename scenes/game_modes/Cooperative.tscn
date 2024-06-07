@@ -17,7 +17,6 @@ offset_right = 1152.0
 offset_bottom = 648.0
 
 [node name="Player1Input" parent="." instance=ExtResource("2_uvrpv")]
-Players = "1"
 
 [node name="Player2Input" parent="." instance=ExtResource("2_uvrpv")]
 Players = "2"

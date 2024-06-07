@@ -13,6 +13,7 @@
 [node name="Base" type="Node2D"]
 
 [node name="PlayerInput" parent="." instance=ExtResource("1_nh5xp")]
+position = Vector2(103, 264)
 Players = "1,2"
 
 [node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("InitialState")]
@@ -56,5 +57,4 @@ offset_right = 103.0
 offset_bottom = 76.0
 
 [connection signal="BlocksRemoved" from="BlockBoard" to="StatHud" method="OnNewCombo"]
-[connection signal="EnteredNewTurn" from="BlockBoard" to="StatHud" method="OnNewTurn"]
 [connection signal="EnteredPhase" from="BlockBoard" to="StatHud" method="OnPhase"]
