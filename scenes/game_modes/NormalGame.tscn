@@ -9,14 +9,26 @@ offset_right = 1152.0
 offset_bottom = 648.0
 
 [node name="GameModeLabel" type="Label" parent="."]
-offset_left = 472.0
-offset_top = 87.0
-offset_right = 646.0
-offset_bottom = 129.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 88.0
+offset_top = 57.0
+offset_right = 197.0
+offset_bottom = 99.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 30
 text = "Normal"
+horizontal_alignment = 1
 
 [node name="GameSession" parent="." instance=ExtResource("1_i6irc")]
+
+[node name="StatHud" parent="GameSession" index="4"]
+offset_left = 498.0
+offset_top = 64.0
+offset_right = 498.0
+offset_bottom = 64.0
 
 [editable path="GameSession"]

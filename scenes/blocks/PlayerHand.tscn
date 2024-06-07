@@ -1,16 +1,91 @@
-[gd_scene load_steps=3 format=3 uid="uid://crowysdyevqkm"]
+[gd_scene load_steps=5 format=3 uid="uid://crowysdyevqkm"]
 
 [ext_resource type="Script" path="res://scenes/blocks/PlayerHand.cs" id="1_8stkd"]
 [ext_resource type="PackedScene" uid="uid://b12i7atr4i8gu" path="res://scenes/blocks/Polyomino.tscn" id="1_pp2pb"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_28gr0"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0, 0, 0, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="Theme" id="Theme_l0hbw"]
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_28gr0")
+
 [node name="PlayerHand" type="Node2D" node_paths=PackedStringArray("CurPolyomino", "NextPolyomino")]
 script = ExtResource("1_8stkd")
-CurPolyomino = NodePath("CurPolyomino")
-NextPolyomino = NodePath("NextPolyomino")
+CurPolyomino = NodePath("CurrentContainer/VBoxContainer/CenterContainer/Control/CurPolyomino")
+NextPolyomino = NodePath("NextContainer/CenterContainer/Control/NextPolyomino")
 
-[node name="CurPolyomino" parent="." instance=ExtResource("1_pp2pb")]
-position = Vector2(0, -116)
+[node name="CurrentContainer" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -61.0
+offset_top = -131.0
+offset_right = 139.0
+offset_bottom = 69.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.6, 0.6)
+theme = SubResource("Theme_l0hbw")
 
-[node name="NextPolyomino" parent="." instance=ExtResource("1_pp2pb")]
-position = Vector2(0, 88)
-scale = Vector2(0.7, 0.7)
+[node name="VBoxContainer" type="VBoxContainer" parent="CurrentContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CurrentContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+
+[node name="Current" type="Label" parent="CurrentContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Current"
+horizontal_alignment = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="CurrentContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="CurrentContainer/VBoxContainer/CenterContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CurPolyomino" parent="CurrentContainer/VBoxContainer/CenterContainer/Control" instance=ExtResource("1_pp2pb")]
+
+[node name="NextContainer" type="PanelContainer" parent="."]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -41.0
+offset_top = 10.0
+offset_right = 159.0
+offset_bottom = 210.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.4, 0.4)
+theme = SubResource("Theme_l0hbw")
+
+[node name="CenterContainer" type="CenterContainer" parent="NextContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="Control" type="Control" parent="NextContainer/CenterContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="NextPolyomino" parent="NextContainer/CenterContainer/Control" instance=ExtResource("1_pp2pb")]
