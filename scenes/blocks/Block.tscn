@@ -1,20 +1,59 @@
-[gd_scene load_steps=2 format=3 uid="uid://clgh8o5jhho6p"]
+[gd_scene load_steps=13 format=3 uid="uid://clgh8o5jhho6p"]
 
 [ext_resource type="Script" path="res://scenes/blocks/Block.cs" id="1_j4msj"]
+[ext_resource type="Texture2D" uid="uid://bp657aj5qncf6" path="res://assets/images/tiles/elephant.png" id="2_qpwmb"]
+[ext_resource type="Texture2D" uid="uid://1fgt0dbdnpw5" path="res://assets/images/tiles/giraffe.png" id="3_ydulw"]
+[ext_resource type="Texture2D" uid="uid://d11y5wuq13lbd" path="res://assets/images/tiles/hippo.png" id="4_84lvd"]
+[ext_resource type="Texture2D" uid="uid://cpd3eewhyoinc" path="res://assets/images/tiles/monkey.png" id="5_binru"]
+[ext_resource type="Texture2D" uid="uid://c6faaop8ij3pc" path="res://assets/images/tiles/panda.png" id="6_aawxp"]
+[ext_resource type="Texture2D" uid="uid://3cqp14yh805c" path="res://assets/images/tiles/parrot.png" id="7_yooke"]
+[ext_resource type="Texture2D" uid="uid://c6cr7c1tojl5j" path="res://assets/images/tiles/penguin.png" id="8_dlcmj"]
+[ext_resource type="Texture2D" uid="uid://jblb1bm53apt" path="res://assets/images/tiles/pig.png" id="9_kx3aa"]
+[ext_resource type="Texture2D" uid="uid://blbe807icii6p" path="res://assets/images/tiles/rabbit.png" id="10_b2o0f"]
+[ext_resource type="Texture2D" uid="uid://c1th87mbf4knr" path="res://assets/images/tiles/snake.png" id="11_pb4sb"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1u77p"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_qpwmb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_ydulw")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_84lvd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_binru")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_aawxp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_yooke")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_dlcmj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_kx3aa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_b2o0f")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_pb4sb")
+}],
+"loop": true,
+"name": &"tiles",
+"speed": 5.0
+}]
 
 [node name="Block" type="Node2D"]
 script = ExtResource("1_j4msj")
 metadata/_edit_group_ = true
 
-[node name="ColorRect" type="ColorRect" parent="."]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_1u77p")
+animation = &"tiles"

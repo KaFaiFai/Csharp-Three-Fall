@@ -119,6 +119,7 @@ public partial class BlockBoard : Node2D
     {
         EmitSignal(SignalName.EnteredNewTurn);
         int phase = 1;
+        ComboSfxPlayer.PitchScale = 1;
         bool toContinue = true;
         while (toContinue)
         {
@@ -169,7 +170,6 @@ public partial class BlockBoard : Node2D
         List<List<Vector2I>> match3RowCols = Mechanics.FindMatch3(blockTypes);
         if (match3RowCols.Count == 0) return false;
 
-        ComboSfxPlayer.PitchScale = 1;
         Tween tween = CreateTween().SetParallel();
         for (var i = 0; i < match3RowCols.Count; i++)
         {

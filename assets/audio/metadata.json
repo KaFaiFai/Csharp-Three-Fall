@@ -1,4 +1,6 @@
-{
-	"file": "completetask_0.mp3",
-	"source": "https://opengameart.org/content/completion-sound"
-}
+[
+	{
+		"path": "res://assets/audio/completetask_0.mp3",
+		"source": "https://opengameart.org/content/completion-sound"
+	}
+]
