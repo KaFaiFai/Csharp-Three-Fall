@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://bwlreh6bshvxf"]
+
+[ext_resource type="PackedScene" uid="uid://bm125c5yo72sk" path="res://scenes/game_modes/GameSession.tscn" id="1_jb8ix"]
+
+[node name="CompetitiveGame" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="GameModeLabel" type="Label" parent="."]
+offset_left = 472.0
+offset_top = 87.0
+offset_right = 647.0
+offset_bottom = 129.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Competitive"
+
+[node name="GameSession1" parent="." instance=ExtResource("1_jb8ix")]
+
+[node name="PlayerInput" parent="GameSession1" index="0"]
+position = Vector2(60, 468)
+Players = "1"
+
+[node name="PlayerHand" parent="GameSession1" index="2"]
+position = Vector2(172, 314)
+
+[node name="BlockBoard" parent="GameSession1" index="3"]
+position = Vector2(398, 430)
+
+[node name="StatHud" parent="GameSession1" index="4"]
+offset_left = 323.0
+offset_top = 173.0
+offset_right = 323.0
+offset_bottom = 173.0
+
+[node name="GameSession2" parent="." instance=ExtResource("1_jb8ix")]
+
+[node name="PlayerInput" parent="GameSession2" index="0"]
+position = Vector2(858, 484)
+Players = "2"
+
+[node name="PlayerHand" parent="GameSession2" index="2"]
+position = Vector2(1002, 331)
+
+[node name="BlockBoard" parent="GameSession2" index="3"]
+position = Vector2(771, 328)
+
+[node name="StatHud" parent="GameSession2" index="4"]
+offset_left = 709.0
+offset_top = 165.0
+offset_right = 709.0
+offset_bottom = 165.0
+
+[editable path="GameSession1"]
+[editable path="GameSession2"]

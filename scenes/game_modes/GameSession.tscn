@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ckhwuulfvwjse" path="res://scenes/blocks/BlockBoard.tscn" id="8_fio3p"]
 [ext_resource type="PackedScene" uid="uid://dwrsnq6e6cm26" path="res://scenes/hud/StatHud.tscn" id="9_c6ygv"]
 
-[node name="Base" type="Node2D"]
+[node name="GameSession" type="Node2D"]
 
 [node name="PlayerInput" parent="." instance=ExtResource("1_nh5xp")]
 position = Vector2(103, 264)
@@ -57,4 +57,5 @@ offset_right = 103.0
 offset_bottom = 76.0
 
 [connection signal="BlocksRemoved" from="BlockBoard" to="StatHud" method="OnNewCombo"]
+[connection signal="EnteredNewTurn" from="BlockBoard" to="StatHud" method="OnNewTurn"]
 [connection signal="EnteredPhase" from="BlockBoard" to="StatHud" method="OnPhase"]

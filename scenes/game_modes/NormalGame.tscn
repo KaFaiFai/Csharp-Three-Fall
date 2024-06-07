@@ -1,0 +1,22 @@
+[gd_scene load_steps=2 format=3 uid="uid://dhx47vi00y3el"]
+
+[ext_resource type="PackedScene" uid="uid://bm125c5yo72sk" path="res://scenes/game_modes/GameSession.tscn" id="1_i6irc"]
+
+[node name="NormalGame" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="GameModeLabel" type="Label" parent="."]
+offset_left = 472.0
+offset_top = 87.0
+offset_right = 646.0
+offset_bottom = 129.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+text = "Normal"
+
+[node name="GameSession" parent="." instance=ExtResource("1_i6irc")]
+
+[editable path="GameSession"]
