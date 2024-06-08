@@ -12,14 +12,12 @@ public partial class PlayerStartState : PlayerState
     override public void OnEnter()
     {
         _inputEvents.ConfirmPressed += GameStarted;
-        _blockBoard?.ClearGridLines();
     }
 
     public void GameStarted()
     {
         _playerHand.WallKick(_blockBoard);
         _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
-        GD.Print($"{_playerHand.Name}, {_blockBoard.Name}");
         EmitSignal(SignalName.Transitioned, _nextInputState);
     }
 

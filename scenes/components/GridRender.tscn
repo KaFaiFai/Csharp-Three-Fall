@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgh7hgnerhwr5"]
+
+[ext_resource type="Script" path="res://scenes/components/GridRender.cs" id="1_v7sdl"]
+
+[node name="GridRender" type="Node2D"]
+script = ExtResource("1_v7sdl")

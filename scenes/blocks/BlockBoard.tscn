@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://ckhwuulfvwjse"]
+[gd_scene load_steps=7 format=3 uid="uid://ckhwuulfvwjse"]
 
 [ext_resource type="Script" path="res://scenes/blocks/BlockBoard.cs" id="1_8iwdt"]
 [ext_resource type="PackedScene" uid="uid://clgh8o5jhho6p" path="res://scenes/blocks/Block.tscn" id="2_3v365"]
 [ext_resource type="PackedScene" uid="uid://dm3kthmony2qx" path="res://scenes/effects/ExplosionEffect.tscn" id="3_7vonp"]
 [ext_resource type="PackedScene" uid="uid://blrgac5gfmush" path="res://scenes/components/BlockGrid.tscn" id="3_eqlts"]
 [ext_resource type="AudioStream" uid="uid://dfgpojcomd5cx" path="res://assets/audio/completetask_0.mp3" id="5_w7ekh"]
+[ext_resource type="PackedScene" uid="uid://cgh7hgnerhwr5" path="res://scenes/components/GridRender.tscn" id="6_13l5c"]
 
 [node name="BlockBoard" type="Node2D" node_paths=PackedStringArray("ComboSfxPlayer", "BlockGrid")]
 script = ExtResource("1_8iwdt")
@@ -17,3 +18,6 @@ BlockGrid = NodePath("BlockGrid")
 
 [node name="ComboSfxPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_w7ekh")
+
+[node name="GridRender" parent="." node_paths=PackedStringArray("BlockGrid") instance=ExtResource("6_13l5c")]
+BlockGrid = NodePath("../BlockGrid")

@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 public partial class BlockGrid : Node2D
 {
@@ -30,6 +31,19 @@ public partial class BlockGrid : Node2D
     {
         Vector2I gridRowCol = new Vector2I(Blocks.GetLength(0), Blocks.GetLength(1));
         return GetCellPositionAt(gridRowCol, CellSize, cellRowCol);
+    }
+
+    /// <summary>
+    /// Allows non-integer input
+    /// </summary>
+    public Vector2 GetCellPositionAt(Vector2 cellRowCol)
+    {
+        Vector2I gridRowCol = new Vector2I(Blocks.GetLength(0), Blocks.GetLength(1));
+        Vector2 cellPos = new Vector2(cellRowCol.X, cellRowCol.Y) * CellSize + Vector2.One * CellSize / 2;
+        Vector2 gridCenter = new Vector2(gridRowCol.X, gridRowCol.Y) * CellSize / 2;
+        Vector2 offset = cellPos - gridCenter;
+        Vector2 swapped = new Vector2(offset.Y, offset.X);
+        return swapped;
     }
 
     /// <summary>

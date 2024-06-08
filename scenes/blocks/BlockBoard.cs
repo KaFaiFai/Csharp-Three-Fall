@@ -27,54 +27,6 @@ public partial class BlockBoard : Node2D
     {
         BlockType?[,] newEmptyBoard = new BlockType?[InitialBoardSize.X, InitialBoardSize.Y];
         BlockGrid.UpdateBlocksFromTypes(newEmptyBoard);
-        DrawGridLines();
-    }
-
-    public void ClearGridLines()
-    {
-        foreach (var line in GridLines)
-        {
-            line.QueueFree();
-        }
-        GridLines = new List<Line2D>();
-    }
-
-    public void DrawGridLines()
-    {
-        if (BlockGrid == null || BlockGrid.Blocks == null) throw new ArgumentException();
-
-        int numRow = BlockGrid.Blocks.GetLength(0);
-        int numCol = BlockGrid.Blocks.GetLength(1);
-        foreach (int i in new List<int> { numRow })
-        {
-            Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(i - 1, -1))
-                + BlockGrid.GetCellPositionAt(new Vector2I(i, 0))) / 2;
-            Vector2 to = (BlockGrid.GetCellPositionAt(new Vector2I(i - 1, numCol - 1))
-                + BlockGrid.GetCellPositionAt(new Vector2I(i, numCol))) / 2;
-            Line2D newLine = new Line2D()
-            {
-                Width = 3,
-                DefaultColor = Colors.Black,
-                Points = new Vector2[] { from, to }
-            };
-            AddChild(newLine);
-            GridLines.Add(newLine);
-        }
-        foreach (int j in new List<int> { 0, numCol })
-        {
-            Vector2 from = (BlockGrid.GetCellPositionAt(new Vector2I(OverflowFrom, j - 1))
-                + BlockGrid.GetCellPositionAt(new Vector2I(OverflowFrom + 1, j))) / 2;
-            Vector2 to = (BlockGrid.GetCellPositionAt(new Vector2I(numRow - 1, j - 1))
-                + BlockGrid.GetCellPositionAt(new Vector2I(numRow, j))) / 2;
-            Line2D newLine = new Line2D()
-            {
-                Width = 3,
-                DefaultColor = Colors.Black,
-                Points = new Vector2[] { from, to }
-            };
-            AddChild(newLine);
-            GridLines.Add(newLine);
-        }
     }
 
     public void ClearPreview()
