@@ -14,10 +14,10 @@ ExplosionEffect = ExtResource("3_7vonp")
 ComboSfxPlayer = NodePath("ComboSfxPlayer")
 BlockGrid = NodePath("BlockGrid")
 
+[node name="GridRender" parent="." node_paths=PackedStringArray("BlockGrid") instance=ExtResource("6_13l5c")]
+BlockGrid = NodePath("../BlockGrid")
+
 [node name="BlockGrid" parent="." instance=ExtResource("3_eqlts")]
 
 [node name="ComboSfxPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_w7ekh")
-
-[node name="GridRender" parent="." node_paths=PackedStringArray("BlockGrid") instance=ExtResource("6_13l5c")]
-BlockGrid = NodePath("../BlockGrid")

@@ -2,5 +2,9 @@
 	{
 		"path": "res://assets/images/tiles/",
 		"source": "Kenney Game Assets All-in-1 2.0.0/2D assets/Animal Pack/PNG/Square without details"
+	},
+	{
+		"path": "res://assets/images/backgrounds/",
+		"source": "Kenney Game Assets All-in-1 2.0.0/2D assets/Background Elements/Samples"
 	}
 ]
