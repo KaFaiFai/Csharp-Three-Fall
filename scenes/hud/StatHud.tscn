@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dwrsnq6e6cm26"]
+[gd_scene load_steps=3 format=3 uid="uid://dwrsnq6e6cm26"]
 
 [ext_resource type="Script" path="res://scenes/hud/StatHud.cs" id="1_tep08"]
+[ext_resource type="FontFile" uid="uid://crywoo5e3c170" path="res://assets/fonts/Anton/Anton-Regular.ttf" id="2_ix3vd"]
 
 [node name="StatHud" type="Control" node_paths=PackedStringArray("ScoreLabel")]
 layout_mode = 3
@@ -12,5 +13,6 @@ ScoreLabel = NodePath("ScoreLabel")
 layout_mode = 0
 offset_right = 147.0
 offset_bottom = 42.0
+theme_override_fonts/font = ExtResource("2_ix3vd")
 theme_override_font_sizes/font_size = 30
 text = "Score: 123"

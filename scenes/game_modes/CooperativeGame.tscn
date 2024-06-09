@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://bpnv2xr18bcbs"]
+[gd_scene load_steps=8 format=3 uid="uid://bpnv2xr18bcbs"]
 
 [ext_resource type="PackedScene" uid="uid://bm125c5yo72sk" path="res://scenes/game_modes/GameSession.tscn" id="1_lpgb2"]
 [ext_resource type="Texture2D" uid="uid://drshsj7qobgcu" path="res://assets/images/backgrounds/colored_castle.png" id="1_vx16w"]
+[ext_resource type="FontFile" uid="uid://crywoo5e3c170" path="res://assets/fonts/Anton/Anton-Regular.ttf" id="2_k24m7"]
 [ext_resource type="PackedScene" uid="uid://bjmrato4y1a8w" path="res://scenes/components/PlayerInput.tscn" id="2_leafm"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerInputState.cs" id="3_gy0lu"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerPlacingState.cs" id="4_bxy8e"]
@@ -20,6 +21,7 @@ offset_left = 472.0
 offset_top = 87.0
 offset_right = 646.0
 offset_bottom = 129.0
+theme_override_fonts/font = ExtResource("2_k24m7")
 theme_override_font_sizes/font_size = 30
 text = "Cooperative"
 

@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bjmrato4y1a8w"]
+[gd_scene load_steps=9 format=3 uid="uid://bjmrato4y1a8w"]
 
 [ext_resource type="Script" path="res://scenes/components/PlayerInput.cs" id="1_8v275"]
 [ext_resource type="Script" path="res://scenes/components/InputTooltips.cs" id="2_13ycq"]
+[ext_resource type="FontFile" uid="uid://crywoo5e3c170" path="res://assets/fonts/Anton/Anton-Regular.ttf" id="3_83fq4"]
 [ext_resource type="Texture2D" uid="uid://k3ufpcp2fphj" path="res://assets/images/inputs/keyboard_arrow_left.png" id="3_cfxep"]
 [ext_resource type="Texture2D" uid="uid://dx6amii3kqxbe" path="res://assets/images/inputs/keyboard_arrow_right.png" id="4_ipybk"]
 [ext_resource type="Texture2D" uid="uid://c4jj3pof012yd" path="res://assets/images/inputs/keyboard_q.png" id="5_i71we"]
@@ -28,6 +29,7 @@ layout_mode = 2
 
 [node name="Move" type="Label" parent="InputTooltips/HBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_83fq4")
 theme_override_font_sizes/font_size = 30
 text = "Move"
 
@@ -44,6 +46,7 @@ layout_mode = 2
 
 [node name="Rotate" type="Label" parent="InputTooltips/HBoxContainer2"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_83fq4")
 theme_override_font_sizes/font_size = 30
 text = "Rotate"
 
@@ -60,6 +63,7 @@ layout_mode = 2
 
 [node name="Comfirm" type="Label" parent="InputTooltips/HBoxContainer3"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("3_83fq4")
 theme_override_font_sizes/font_size = 30
 text = "Confirm"
 
