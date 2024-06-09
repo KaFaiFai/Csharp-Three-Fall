@@ -21,7 +21,6 @@ public partial class PlayerPlacingState : PlayerState
         {
             _playerHand.AdvancePolyomino();
             _playerHand.WallKick(_blockBoard);
-            _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
             EmitSignal(SignalName.Transitioned, _nextInputState);
         }
         else

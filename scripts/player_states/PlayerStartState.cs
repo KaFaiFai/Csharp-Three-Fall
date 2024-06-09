@@ -17,7 +17,6 @@ public partial class PlayerStartState : PlayerState
     public void GameStarted()
     {
         _playerHand.WallKick(_blockBoard);
-        _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
         EmitSignal(SignalName.Transitioned, _nextInputState);
     }
 

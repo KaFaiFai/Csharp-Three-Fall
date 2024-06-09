@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://bjmrato4y1a8w"]
+[gd_scene load_steps=8 format=3 uid="uid://bjmrato4y1a8w"]
 
 [ext_resource type="Script" path="res://scenes/components/PlayerInput.cs" id="1_8v275"]
 [ext_resource type="Script" path="res://scenes/components/InputTooltips.cs" id="2_13ycq"]
+[ext_resource type="Texture2D" uid="uid://k3ufpcp2fphj" path="res://assets/images/inputs/keyboard_arrow_left.png" id="3_cfxep"]
+[ext_resource type="Texture2D" uid="uid://dx6amii3kqxbe" path="res://assets/images/inputs/keyboard_arrow_right.png" id="4_ipybk"]
+[ext_resource type="Texture2D" uid="uid://c4jj3pof012yd" path="res://assets/images/inputs/keyboard_q.png" id="5_i71we"]
+[ext_resource type="Texture2D" uid="uid://cmlop1oy6oe0p" path="res://assets/images/inputs/keyboard_e.png" id="6_nv70e"]
+[ext_resource type="Texture2D" uid="uid://bomdb6vk45tqg" path="res://assets/images/inputs/keyboard_space.png" id="7_rpk4a"]
 
 [node name="PlayerInput" type="Node2D"]
+scale = Vector2(0.5, 0.5)
 script = ExtResource("1_8v275")
 Players = "1"
 
@@ -22,70 +28,41 @@ layout_mode = 2
 
 [node name="Move" type="Label" parent="InputTooltips/HBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
-theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
 text = "Move"
 
-[node name="Left" type="Label" parent="InputTooltips/HBoxContainer"]
+[node name="Left" type="TextureRect" parent="InputTooltips/HBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
-text = "Left"
+texture = ExtResource("3_cfxep")
 
-[node name="Right" type="Label" parent="InputTooltips/HBoxContainer"]
+[node name="Right" type="TextureRect" parent="InputTooltips/HBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
-text = "Right"
+texture = ExtResource("4_ipybk")
 
 [node name="HBoxContainer2" type="HBoxContainer" parent="InputTooltips"]
 layout_mode = 2
 
 [node name="Rotate" type="Label" parent="InputTooltips/HBoxContainer2"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
-theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
 text = "Rotate"
 
-[node name="Clockwise" type="Label" parent="InputTooltips/HBoxContainer2"]
+[node name="Clockwise" type="TextureRect" parent="InputTooltips/HBoxContainer2"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
-text = "↻"
+texture = ExtResource("5_i71we")
 
-[node name="Anticlockwise" type="Label" parent="InputTooltips/HBoxContainer2"]
+[node name="Anticlockwise" type="TextureRect" parent="InputTooltips/HBoxContainer2"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
-text = "↺"
+texture = ExtResource("6_nv70e")
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="InputTooltips"]
 layout_mode = 2
 
 [node name="Comfirm" type="Label" parent="InputTooltips/HBoxContainer3"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
-theme_override_constants/outline_size = 5
 theme_override_font_sizes/font_size = 30
 text = "Confirm"
 
-[node name="ConfirmButton" type="Label" parent="InputTooltips/HBoxContainer3"]
+[node name="ConfirmButton" type="TextureRect" parent="InputTooltips/HBoxContainer3"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0.950667, 1, 0.26, 1)
-theme_override_constants/outline_size = 5
-theme_override_font_sizes/font_size = 30
-text = "Spacebar"
+texture = ExtResource("7_rpk4a")

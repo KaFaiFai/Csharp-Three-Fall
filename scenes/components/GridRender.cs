@@ -64,6 +64,6 @@ public partial class GridRender : Node2D
             + Vector2.One * (InnerBorderWidth + OuterBorderWidth / 2);
         Vector2 size = end - start;
         Rect2 rect = new Rect2(start, size);
-        DrawRect(rect, Colors.DarkGray, false, OuterBorderWidth);
+        DrawRect(rect, Colors.White, false, OuterBorderWidth);
     }
 }

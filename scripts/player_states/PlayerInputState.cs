@@ -16,6 +16,8 @@ public partial class PlayerInputState : PlayerState
         _inputEvents.ClockwisePressed += RotateClockwise;
         _inputEvents.AnticlockwisePressed += RotateAnticlockwise;
         _inputEvents.ConfirmPressed += PlaceCurrentPolyomino;
+
+        _blockBoard.UpdatePreviewPolyomino(_playerHand.CurPolyomino, _playerHand.LeftIndex);
     }
 
     public override void OnExit()

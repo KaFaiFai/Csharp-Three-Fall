@@ -6,5 +6,9 @@
 	{
 		"path": "res://assets/images/backgrounds/",
 		"source": "Kenney Game Assets All-in-1 2.0.0/2D assets/Background Elements/Samples"
+	},
+	{
+		"path": "res://assets/images/inputs/",
+		"source": "Kenney Game Assets All-in-1 2.0.0/2D assets/Input Prompts/Keyboard & Mouse/Default"
 	}
 ]

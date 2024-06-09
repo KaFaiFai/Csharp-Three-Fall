@@ -6,45 +6,37 @@ using System.Linq;
 
 public partial class InputTooltips : VBoxContainer
 {
-    [Export] public Label Left { get; private set; }
-    [Export] public Label Right { get; private set; }
-    [Export] public Label Clockwise { get; private set; }
-    [Export] public Label Anticlockwise { get; private set; }
-    [Export] public Label ConfirmButton { get; private set; }
+    [Export] public TextureRect Left { get; private set; }
+    [Export] public TextureRect Right { get; private set; }
+    [Export] public TextureRect Clockwise { get; private set; }
+    [Export] public TextureRect Anticlockwise { get; private set; }
+    [Export] public TextureRect ConfirmButton { get; private set; }
+
+    static private String InputImagesFolder { get; } = "res://assets/images/inputs/";
 
     public void SetLabels(List<int> playerIndices)
     {
         if (playerIndices == null || playerIndices.Count == 0) { return; }
         int playerIndex = playerIndices.Min();
-        UpdateLabelWithAction(Left, $"left-player{playerIndex}");
-        UpdateLabelWithAction(Right, $"right-player{playerIndex}");
-        UpdateLabelWithAction(Clockwise, $"clockwise-player{playerIndex}");
-        UpdateLabelWithAction(Anticlockwise, $"anticlockwise-player{playerIndex}");
-        UpdateLabelWithAction(ConfirmButton, $"confirm-player{playerIndex}");
+        UpdateImageWithAction(Left, $"left-player{playerIndex}");
+        UpdateImageWithAction(Right, $"right-player{playerIndex}");
+        UpdateImageWithAction(Clockwise, $"clockwise-player{playerIndex}");
+        UpdateImageWithAction(Anticlockwise, $"anticlockwise-player{playerIndex}");
+        UpdateImageWithAction(ConfirmButton, $"confirm-player{playerIndex}");
     }
 
-    private void UpdateLabelWithAction(Label label, String action)
+    private void UpdateImageWithAction(TextureRect textureRect, String action)
     {
         try
         {
             Array<InputEvent> events = InputMap.ActionGetEvents(action);
             InputEventKey keyEvent = (InputEventKey)events.First();
-            label.Text = OS.GetKeycodeString(keyEvent.PhysicalKeycode);
+            string key = OS.GetKeycodeString(keyEvent.PhysicalKeycode);
+            textureRect.Texture = GD.Load<Texture2D>($"{InputImagesFolder}keyboard_{key.ToLower()}.png");
         }
         catch (Exception)
         {
             throw;
         }
-    }
-
-    // Called when the node enters the scene tree for the first time.
-    public override void _Ready()
-    {
-
-    }
-
-    // Called every frame. 'delta' is the elapsed time since the previous frame.
-    public override void _Process(double delta)
-    {
     }
 }
