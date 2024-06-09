@@ -5,10 +5,17 @@
 	},
 	{
 		"path": "res://assets/images/backgrounds/",
-		"source": "Kenney Game Assets All-in-1 2.0.0/2D assets/Background Elements/Samples"
+		"source": [
+			"Kenney Game Assets All-in-1 2.0.0/2D assets/Background Elements/Samples", 
+			"Kenney Game Assets All-in-1 2.0.0/2D assets/Background Elements Redux/Backgrounds"
+			]
 	},
 	{
 		"path": "res://assets/images/inputs/",
 		"source": "Kenney Game Assets All-in-1 2.0.0/2D assets/Input Prompts/Keyboard & Mouse/Default"
+	},
+	{
+		"path": "res://assets/images/ui/",
+		"source": "Kenney Game Assets All-in-1 2.0.0/2D assets/UI Adventure Pack/PNG"
 	}
 ]

@@ -1,0 +1,101 @@
+[gd_scene load_steps=6 format=3 uid="uid://qefvedvyskts"]
+
+[ext_resource type="Texture2D" uid="uid://cfyatlec3h2qd" path="res://assets/images/backgrounds/backgroundColorDesert.png" id="1_bvvuc"]
+[ext_resource type="Script" path="res://scenes/screens/MenuScreen.cs" id="1_sahv0"]
+[ext_resource type="FontFile" uid="uid://crywoo5e3c170" path="res://assets/fonts/Anton/Anton-Regular.ttf" id="2_fcjv4"]
+[ext_resource type="Texture2D" uid="uid://etd348auecei" path="res://assets/images/ui/arrowSilver_left.png" id="4_usvap"]
+[ext_resource type="Texture2D" uid="uid://cyrqqdw600uxx" path="res://assets/images/ui/arrowSilver_right.png" id="5_py0sq"]
+
+[node name="MenuScreen" type="Control" node_paths=PackedStringArray("MenuItems", "ArrowLeft", "ArrowRight")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_sahv0")
+MenuItems = [NodePath("MenuItems/SinglePlayer"), NodePath("MenuItems/Cooperative"), NodePath("MenuItems/Competitive"), NodePath("MenuItems/Exit")]
+ArrowLeft = NodePath("ArrowLeft")
+ArrowRight = NodePath("ArrowRight")
+
+[node name="BackgroundColorDesert" type="Sprite2D" parent="."]
+modulate = Color(0.8, 0.8, 0.8, 1)
+position = Vector2(575, 345)
+scale = Vector2(1.16898, 1.16898)
+texture = ExtResource("1_bvvuc")
+
+[node name="Title" type="Label" parent="."]
+layout_mode = 0
+offset_left = 254.0
+offset_top = 65.0
+offset_right = 930.0
+offset_bottom = 247.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 4
+theme_override_constants/shadow_offset_y = 4
+theme_override_fonts/font = ExtResource("2_fcjv4")
+theme_override_font_sizes/font_size = 120
+text = "Animal Blocks"
+
+[node name="MenuItems" type="VBoxContainer" parent="."]
+layout_mode = 0
+offset_left = 524.0
+offset_top = 303.0
+offset_right = 680.0
+offset_bottom = 577.0
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="SinglePlayer" type="Button" parent="MenuItems"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_fcjv4")
+theme_override_font_sizes/font_size = 30
+text = "Single player"
+flat = true
+
+[node name="Cooperative" type="Button" parent="MenuItems"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_fcjv4")
+theme_override_font_sizes/font_size = 30
+text = "Cooperative"
+flat = true
+
+[node name="Competitive" type="Button" parent="MenuItems"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_fcjv4")
+theme_override_font_sizes/font_size = 30
+text = "Competitive"
+flat = true
+
+[node name="Exit" type="Button" parent="MenuItems"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 5
+theme_override_fonts/font = ExtResource("2_fcjv4")
+theme_override_font_sizes/font_size = 30
+text = "Exit"
+flat = true
+
+[node name="ArrowRight" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 22.0
+offset_bottom = 21.0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("4_usvap")
+
+[node name="ArrowLeft" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 22.0
+offset_bottom = 21.0
+scale = Vector2(1.5, 1.5)
+texture = ExtResource("5_py0sq")
