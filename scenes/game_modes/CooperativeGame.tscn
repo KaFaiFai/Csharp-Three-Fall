@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://scripts/player_states/PlayerPlacingState.cs" id="4_bxy8e"]
 [ext_resource type="PackedScene" uid="uid://crowysdyevqkm" path="res://scenes/blocks/PlayerHand.tscn" id="5_la5xr"]
 
-[node name="NormalGame" type="Node2D"]
+[node name="NormalGame2" type="Node2D"]
 
 [node name="ColoredCastle" type="Sprite2D" parent="."]
 modulate = Color(0.7, 0.7, 0.7, 1)
