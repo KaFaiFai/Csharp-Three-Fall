@@ -31,10 +31,6 @@ text = "Cooperative"
 position = Vector2(127, 435)
 Players = "1"
 
-[node name="Player2Input" parent="GameSession" instance=ExtResource("2_leafm")]
-position = Vector2(819, 440)
-Players = "2"
-
 [node name="PlayerPlacingState" parent="GameSession/PlayerStateMachine" index="2" node_paths=PackedStringArray("_nextInputState")]
 _nextInputState = NodePath("../Player2InputState")
 
@@ -52,8 +48,12 @@ _nextGameOverState = NodePath("../PlayerGameOverState")
 _blockBoard = NodePath("../../BlockBoard")
 _playerHand = NodePath("../../Player2Hand")
 
-[node name="PlayerHand" parent="GameSession" index="3"]
+[node name="PlayerHand" parent="GameSession" index="2"]
 position = Vector2(228, 287)
+
+[node name="Player2Input" parent="GameSession" instance=ExtResource("2_leafm")]
+position = Vector2(819, 440)
+Players = "2"
 
 [node name="Player2Hand" parent="GameSession" instance=ExtResource("5_la5xr")]
 position = Vector2(942, 290)

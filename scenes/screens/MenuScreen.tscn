@@ -6,7 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://etd348auecei" path="res://assets/images/ui/arrowSilver_left.png" id="4_usvap"]
 [ext_resource type="Texture2D" uid="uid://cyrqqdw600uxx" path="res://assets/images/ui/arrowSilver_right.png" id="5_py0sq"]
 
-[node name="MenuScreen" type="Control" node_paths=PackedStringArray("MenuItems", "ArrowLeft", "ArrowRight")]
+[node name="MenuScreen" type="Control" node_paths=PackedStringArray("ArrowLeft", "ArrowRight")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -14,7 +14,6 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_sahv0")
-MenuItems = [NodePath("MenuItems/SinglePlayer"), NodePath("MenuItems/Cooperative"), NodePath("MenuItems/Competitive"), NodePath("MenuItems/Exit")]
 ArrowLeft = NodePath("ArrowLeft")
 ArrowRight = NodePath("ArrowRight")
 
