@@ -1,21 +1,26 @@
-[gd_scene load_steps=2 format=3 uid="uid://bwlreh6bshvxf"]
+[gd_scene load_steps=4 format=3 uid="uid://bwlreh6bshvxf"]
 
+[ext_resource type="Texture2D" uid="uid://drshsj7qobgcu" path="res://assets/images/backgrounds/colored_castle.png" id="1_dmklj"]
 [ext_resource type="PackedScene" uid="uid://bm125c5yo72sk" path="res://scenes/game_modes/GameSession.tscn" id="1_jb8ix"]
+[ext_resource type="FontFile" uid="uid://crywoo5e3c170" path="res://assets/fonts/Anton/Anton-Regular.ttf" id="2_cwbt3"]
 
 [node name="CompetitiveGame" type="Node2D"]
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_right = 1152.0
-offset_bottom = 648.0
+[node name="ColoredCastle" type="Sprite2D" parent="."]
+modulate = Color(0.7, 0.7, 0.7, 1)
+position = Vector2(580, 311)
+scale = Vector2(1.14983, 1.14983)
+texture = ExtResource("1_dmklj")
 
 [node name="GameModeLabel" type="Label" parent="."]
-offset_left = 472.0
+offset_left = 506.0
 offset_top = 87.0
-offset_right = 647.0
-offset_bottom = 129.0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+offset_right = 649.0
+offset_bottom = 133.0
+theme_override_fonts/font = ExtResource("2_cwbt3")
 theme_override_font_sizes/font_size = 30
 text = "Competitive"
+horizontal_alignment = 1
 
 [node name="GameSession1" parent="." instance=ExtResource("1_jb8ix")]
 

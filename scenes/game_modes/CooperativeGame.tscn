@@ -17,13 +17,14 @@ scale = Vector2(1.14983, 1.14983)
 texture = ExtResource("1_vx16w")
 
 [node name="GameModeLabel" type="Label" parent="."]
-offset_left = 472.0
-offset_top = 87.0
-offset_right = 646.0
-offset_bottom = 129.0
+offset_left = 503.0
+offset_top = 89.0
+offset_right = 647.0
+offset_bottom = 135.0
 theme_override_fonts/font = ExtResource("2_k24m7")
 theme_override_font_sizes/font_size = 30
 text = "Cooperative"
+horizontal_alignment = 1
 
 [node name="GameSession" parent="." instance=ExtResource("1_lpgb2")]
 
