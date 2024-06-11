@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bm125c5yo72sk"]
+[gd_scene load_steps=11 format=3 uid="uid://bm125c5yo72sk"]
 
 [ext_resource type="PackedScene" uid="uid://bjmrato4y1a8w" path="res://scenes/components/PlayerInput.tscn" id="1_nh5xp"]
 [ext_resource type="Script" path="res://scripts/player_states/PlayerStateMachine.cs" id="2_rm0ro"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://crowysdyevqkm" path="res://scenes/blocks/PlayerHand.tscn" id="7_tucaq"]
 [ext_resource type="PackedScene" uid="uid://ckhwuulfvwjse" path="res://scenes/blocks/BlockBoard.tscn" id="8_fio3p"]
 [ext_resource type="PackedScene" uid="uid://dwrsnq6e6cm26" path="res://scenes/hud/StatHud.tscn" id="9_c6ygv"]
+[ext_resource type="FontFile" uid="uid://crywoo5e3c170" path="res://assets/fonts/Anton/Anton-Regular.ttf" id="10_ftorr"]
 
 [node name="GameSession" type="Node2D"]
 
@@ -41,8 +42,9 @@ _nextGameOverState = NodePath("../PlayerGameOverState")
 _blockBoard = NodePath("../../BlockBoard")
 _playerHand = NodePath("../../PlayerHand")
 
-[node name="PlayerGameOverState" type="Node" parent="PlayerStateMachine"]
+[node name="PlayerGameOverState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("GameOver")]
 script = ExtResource("6_s1o4i")
+GameOver = NodePath("../../GameOver")
 
 [node name="PlayerHand" parent="." instance=ExtResource("7_tucaq")]
 position = Vector2(943, 327)
@@ -55,6 +57,20 @@ offset_left = 103.0
 offset_top = 76.0
 offset_right = 103.0
 offset_bottom = 76.0
+
+[node name="GameOver" type="Label" parent="."]
+visible = false
+offset_left = 506.0
+offset_top = 283.0
+offset_right = 646.0
+offset_bottom = 329.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_constants/shadow_offset_y = 5
+theme_override_fonts/font = ExtResource("10_ftorr")
+theme_override_font_sizes/font_size = 30
+text = "Game Over"
+horizontal_alignment = 1
 
 [connection signal="BlocksRemoved" from="BlockBoard" to="StatHud" method="OnNewCombo"]
 [connection signal="EnteredNewTurn" from="BlockBoard" to="StatHud" method="OnNewTurn"]
