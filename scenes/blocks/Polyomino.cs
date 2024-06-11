@@ -41,10 +41,6 @@ public partial class Polyomino : Node2D
                 Tween.TweenMethod(TweenRotation(block, targetPosition, clockwise), 0f, 1f, 0.3f)
                     .SetEase(Tween.EaseType.InOut)
                     .SetTrans(Tween.TransitionType.Back);
-                double rotation = clockwise ? Math.PI / 2 : -Math.PI / 2;
-                Tween.TweenProperty(block, "rotation", block.Rotation + rotation, 0.3f)
-                    .SetEase(Tween.EaseType.InOut)
-                    .SetTrans(Tween.TransitionType.Back);
             }
         }
         BlockGrid.Blocks = newBlocks;

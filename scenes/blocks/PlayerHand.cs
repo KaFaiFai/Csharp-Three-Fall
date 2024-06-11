@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 public partial class PlayerHand : Node2D
 {
@@ -10,6 +11,17 @@ public partial class PlayerHand : Node2D
     public int LeftIndex { get; set; }
 
     private RandomNumberGenerator Rng { get; set; }
+
+    private List<bool[,]> _allShapes = new List<bool[,]>
+    {
+        new bool[,]{ { true, false, false }, { true, true, true } },
+        new bool[,]{ { false, false, true }, { true, true, true } },
+        new bool[,]{ { false, true, true }, { true, true, false } },
+        new bool[,]{ { true, true, false }, { false, true, true } },
+        new bool[,]{ { false, true, false }, { true, true, true } },
+        new bool[,]{ { true, true, true, true } },
+        new bool[,]{ { true, true }, { true, true } },
+    };
 
     public override void _Ready()
     {
@@ -23,8 +35,7 @@ public partial class PlayerHand : Node2D
     {
         CurPolyomino.BlockGrid.UpdateBlocksFromTypes(NextPolyomino.BlockGrid.ToBlockTypes());
 
-        // TODO: Randomize shapes
-        bool[,] shape = new bool[,] { { true, false, false }, { true, true, true } };
+        bool[,] shape = _allShapes[Rng.RandiRange(0, _allShapes.Count - 1)];
         BlockType?[,] newBlockTypes = new BlockType?[shape.GetLength(0), shape.GetLength(1)];
         BlockType[] allBlockTypes = Enum.GetValues<BlockType>();
         for (int i = 0; i < shape.GetLength(0); i++)
