@@ -51,9 +51,10 @@ public partial class MenuScreen : Control
             case "Competitive":
                 GameScreen gameScreen = gameScene.Instantiate<GameScreen>();
                 gameScreen.GameMode = MenuItems[(int)ItemIndex].Name;
-                PackedScene packedScene = new PackedScene();
-                packedScene.Pack(gameScreen);
-                GetTree().ChangeSceneToPacked(packedScene);
+                //PackedScene packedScene = new PackedScene();
+                //packedScene.Pack(gameScreen);
+                GetTree().Root.AddChild(gameScreen);
+                QueueFree();
                 break;
             case "Exit":
                 GetTree().Quit();

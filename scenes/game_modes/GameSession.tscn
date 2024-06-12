@@ -42,9 +42,8 @@ _nextGameOverState = NodePath("../PlayerGameOverState")
 _blockBoard = NodePath("../../BlockBoard")
 _playerHand = NodePath("../../PlayerHand")
 
-[node name="PlayerGameOverState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("GameOver")]
+[node name="PlayerGameOverState" type="Node" parent="PlayerStateMachine"]
 script = ExtResource("6_s1o4i")
-GameOver = NodePath("../../GameOver")
 
 [node name="PlayerHand" parent="." instance=ExtResource("7_tucaq")]
 position = Vector2(943, 327)
