@@ -13,10 +13,17 @@ scale = Vector2(1.14983, 1.14983)
 texture = ExtResource("1_dmklj")
 
 [node name="GameModeLabel" type="Label" parent="."]
-offset_left = 506.0
-offset_top = 87.0
-offset_right = 649.0
-offset_bottom = 133.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 504.5
+offset_top = 68.0
+offset_right = 647.5
+offset_bottom = 114.0
+grow_horizontal = 2
+grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_cwbt3")
 theme_override_font_sizes/font_size = 30
 text = "Competitive"
@@ -25,32 +32,32 @@ horizontal_alignment = 1
 [node name="GameSession1" parent="." instance=ExtResource("1_jb8ix")]
 
 [node name="PlayerInput" parent="GameSession1" index="0"]
-position = Vector2(60, 468)
+position = Vector2(117, 475)
 Players = "1"
 
 [node name="PlayerHand" parent="GameSession1" index="2"]
 position = Vector2(172, 314)
 
 [node name="BlockBoard" parent="GameSession1" index="3"]
-position = Vector2(398, 430)
+position = Vector2(398, 377)
 
 [node name="StatHud" parent="GameSession1" index="4"]
 offset_left = 323.0
-offset_top = 173.0
+offset_top = 165.0
 offset_right = 323.0
-offset_bottom = 173.0
+offset_bottom = 165.0
 
 [node name="GameSession2" parent="." instance=ExtResource("1_jb8ix")]
 
 [node name="PlayerInput" parent="GameSession2" index="0"]
-position = Vector2(858, 484)
+position = Vector2(947, 475)
 Players = "2"
 
 [node name="PlayerHand" parent="GameSession2" index="2"]
-position = Vector2(1002, 331)
+position = Vector2(1002, 314)
 
 [node name="BlockBoard" parent="GameSession2" index="3"]
-position = Vector2(771, 328)
+position = Vector2(771, 377)
 
 [node name="StatHud" parent="GameSession2" index="4"]
 offset_left = 709.0

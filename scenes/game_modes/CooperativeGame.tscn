@@ -17,10 +17,10 @@ scale = Vector2(1.14983, 1.14983)
 texture = ExtResource("1_vx16w")
 
 [node name="GameModeLabel" type="Label" parent="."]
-offset_left = 503.0
-offset_top = 89.0
-offset_right = 647.0
-offset_bottom = 135.0
+offset_left = 504.0
+offset_top = 68.0
+offset_right = 648.0
+offset_bottom = 114.0
 theme_override_fonts/font = ExtResource("2_k24m7")
 theme_override_font_sizes/font_size = 30
 text = "Cooperative"
@@ -29,7 +29,7 @@ horizontal_alignment = 1
 [node name="GameSession" parent="." instance=ExtResource("1_lpgb2")]
 
 [node name="PlayerInput" parent="GameSession" index="0"]
-position = Vector2(127, 435)
+position = Vector2(117, 475)
 Players = "1"
 
 [node name="PlayerPlacingState" parent="GameSession/PlayerStateMachine" index="2" node_paths=PackedStringArray("_nextInputState")]
@@ -50,14 +50,21 @@ _blockBoard = NodePath("../../BlockBoard")
 _playerHand = NodePath("../../Player2Hand")
 
 [node name="PlayerHand" parent="GameSession" index="2"]
-position = Vector2(228, 287)
+position = Vector2(172, 314)
+
+[node name="BlockBoard" parent="GameSession" index="3"]
+position = Vector2(576, 327)
+
+[node name="StatHud" parent="GameSession" index="4"]
+offset_top = 68.0
+offset_bottom = 68.0
 
 [node name="Player2Input" parent="GameSession" instance=ExtResource("2_leafm")]
-position = Vector2(819, 440)
+position = Vector2(947, 475)
 Players = "2"
 
 [node name="Player2Hand" parent="GameSession" instance=ExtResource("5_la5xr")]
-position = Vector2(942, 290)
+position = Vector2(1002, 314)
 Seed = 1
 
 [editable path="GameSession"]

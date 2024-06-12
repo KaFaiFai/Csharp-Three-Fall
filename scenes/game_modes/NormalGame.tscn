@@ -16,10 +16,10 @@ texture = ExtResource("1_lcfn0")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 88.0
-offset_top = 57.0
-offset_right = 197.0
-offset_bottom = 99.0
+offset_left = 533.0
+offset_top = 68.0
+offset_right = 618.0
+offset_bottom = 114.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_nbtkj")
@@ -29,10 +29,17 @@ horizontal_alignment = 1
 
 [node name="GameSession" parent="." instance=ExtResource("1_i6irc")]
 
+[node name="PlayerInput" parent="GameSession" index="0"]
+position = Vector2(227, 324)
+
+[node name="PlayerHand" parent="GameSession" index="2"]
+position = Vector2(879, 383)
+
+[node name="BlockBoard" parent="GameSession" index="3"]
+position = Vector2(576, 327)
+
 [node name="StatHud" parent="GameSession" index="4"]
-offset_left = 498.0
-offset_top = 64.0
-offset_right = 498.0
-offset_bottom = 64.0
+offset_top = 68.0
+offset_bottom = 68.0
 
 [editable path="GameSession"]
