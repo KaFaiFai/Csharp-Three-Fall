@@ -8,6 +8,8 @@ public partial class PlayerInput : Node
 {
     [Signal] public delegate void LeftPressedEventHandler();
     [Signal] public delegate void RightPressedEventHandler();
+    [Signal] public delegate void UpPressedEventHandler();
+    [Signal] public delegate void DownPressedEventHandler();
     [Signal] public delegate void ClockwisePressedEventHandler();
     [Signal] public delegate void AnticlockwisePressedEventHandler();
     [Signal] public delegate void ConfirmPressedEventHandler();
@@ -32,6 +34,14 @@ public partial class PlayerInput : Node
         if (AnyActionPressed(i => $"right-player{i}"))
         {
             EmitSignal(SignalName.RightPressed);
+        }
+        if (AnyActionPressed(i => $"up-player{i}"))
+        {
+            EmitSignal(SignalName.UpPressed);
+        }
+        if (AnyActionPressed(i => $"down-player{i}"))
+        {
+            EmitSignal(SignalName.DownPressed);
         }
         if (AnyActionPressed(i => $"clockwise-player{i}"))
         {

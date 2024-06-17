@@ -9,7 +9,7 @@ public partial class MenuScreen : Control
     [Export] public TextureRect ArrowRight { get; set; }
 
     public Array<Button> MenuItems { get; set; }
-    private PackedScene gameScene = GD.Load<PackedScene>("res://scenes/screens/GameScreen.tscn");
+    private PackedScene GameScene = GD.Load<PackedScene>("res://scenes/screens/GameScreen.tscn");
 
     public int? ItemIndex { get; private set; } = null;
     private float Margin { get; set; } = 20;
@@ -41,6 +41,18 @@ public partial class MenuScreen : Control
         CallDeferred(MethodName.UpdateArrowsPosition);
     }
 
+    private void OnPressedDown()
+    {
+        ItemIndex = ItemIndex == null ? 0 : ItemIndex + 1;
+        CallDeferred(MethodName.UpdateArrowsPosition);
+    }
+
+    private void OnPressedUp()
+    {
+        ItemIndex = ItemIndex == null ? 0 : ItemIndex - 1;
+        CallDeferred(MethodName.UpdateArrowsPosition);
+    }
+
     private void OnSelected()
     {
         if (ItemIndex == null) return;
@@ -49,7 +61,7 @@ public partial class MenuScreen : Control
             case "SinglePlayer":
             case "Cooperative":
             case "Competitive":
-                GameScreen gameScreen = gameScene.Instantiate<GameScreen>();
+                GameScreen gameScreen = GameScene.Instantiate<GameScreen>();
                 gameScreen.GameMode = MenuItems[(int)ItemIndex].Name;
                 //PackedScene packedScene = new PackedScene();
                 //packedScene.Pack(gameScreen);

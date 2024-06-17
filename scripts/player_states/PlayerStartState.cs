@@ -11,7 +11,7 @@ public partial class PlayerStartState : PlayerState
 
     override public void OnEnter()
     {
-        _inputEvents.ConfirmPressed += GameStarted;
+        CallDeferred(MethodName.GameStarted);
     }
 
     public void GameStarted()
@@ -20,8 +20,5 @@ public partial class PlayerStartState : PlayerState
         EmitSignal(SignalName.Transitioned, _nextInputState);
     }
 
-    override public void OnExit()
-    {
-        _inputEvents.ConfirmPressed -= GameStarted;
-    }
+    override public void OnExit() { }
 }

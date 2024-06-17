@@ -17,34 +17,6 @@
 position = Vector2(103, 264)
 Players = "1,2"
 
-[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("InitialState")]
-script = ExtResource("2_rm0ro")
-InitialState = NodePath("PlayerStartState")
-
-[node name="PlayerStartState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextInputState", "_inputEvents", "_blockBoard", "_playerHand")]
-script = ExtResource("3_xs7yl")
-_nextInputState = NodePath("../PlayerInputState")
-_inputEvents = NodePath("../../PlayerInput")
-_blockBoard = NodePath("../../BlockBoard")
-_playerHand = NodePath("../../PlayerHand")
-
-[node name="PlayerInputState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextPlacingState", "_inputEvents", "_blockBoard", "_playerHand")]
-script = ExtResource("4_hl5gn")
-_nextPlacingState = NodePath("../PlayerPlacingState")
-_inputEvents = NodePath("../../PlayerInput")
-_blockBoard = NodePath("../../BlockBoard")
-_playerHand = NodePath("../../PlayerHand")
-
-[node name="PlayerPlacingState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextInputState", "_nextGameOverState", "_blockBoard", "_playerHand")]
-script = ExtResource("5_x7wrg")
-_nextInputState = NodePath("../PlayerInputState")
-_nextGameOverState = NodePath("../PlayerGameOverState")
-_blockBoard = NodePath("../../BlockBoard")
-_playerHand = NodePath("../../PlayerHand")
-
-[node name="PlayerGameOverState" type="Node" parent="PlayerStateMachine"]
-script = ExtResource("6_s1o4i")
-
 [node name="PlayerHand" parent="." instance=ExtResource("7_tucaq")]
 position = Vector2(943, 327)
 
@@ -70,6 +42,34 @@ theme_override_fonts/font = ExtResource("10_ftorr")
 theme_override_font_sizes/font_size = 30
 text = "Game Over"
 horizontal_alignment = 1
+
+[node name="PlayerStateMachine" type="Node" parent="." node_paths=PackedStringArray("InitialState")]
+script = ExtResource("2_rm0ro")
+InitialState = NodePath("PlayerInputState")
+
+[node name="PlayerStartState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextInputState", "_inputEvents", "_blockBoard", "_playerHand")]
+script = ExtResource("3_xs7yl")
+_nextInputState = NodePath("../PlayerInputState")
+_inputEvents = NodePath("../../PlayerInput")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../PlayerHand")
+
+[node name="PlayerInputState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextPlacingState", "_inputEvents", "_blockBoard", "_playerHand")]
+script = ExtResource("4_hl5gn")
+_nextPlacingState = NodePath("../PlayerPlacingState")
+_inputEvents = NodePath("../../PlayerInput")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../PlayerHand")
+
+[node name="PlayerPlacingState" type="Node" parent="PlayerStateMachine" node_paths=PackedStringArray("_nextInputState", "_nextGameOverState", "_blockBoard", "_playerHand")]
+script = ExtResource("5_x7wrg")
+_nextInputState = NodePath("../PlayerInputState")
+_nextGameOverState = NodePath("../PlayerGameOverState")
+_blockBoard = NodePath("../../BlockBoard")
+_playerHand = NodePath("../../PlayerHand")
+
+[node name="PlayerGameOverState" type="Node" parent="PlayerStateMachine"]
+script = ExtResource("6_s1o4i")
 
 [connection signal="BlocksRemoved" from="BlockBoard" to="StatHud" method="OnNewCombo"]
 [connection signal="EnteredNewTurn" from="BlockBoard" to="StatHud" method="OnNewTurn"]
