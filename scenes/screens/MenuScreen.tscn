@@ -19,6 +19,7 @@ ArrowLeft = NodePath("ArrowLeft")
 ArrowRight = NodePath("ArrowRight")
 
 [node name="PlayerInput" parent="." instance=ExtResource("2_ccyrl")]
+Players = "1,2"
 
 [node name="BackgroundColorDesert" type="Sprite2D" parent="."]
 modulate = Color(0.8, 0.8, 0.8, 1)
